@@ -1,18 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
-import HomePage from './Pages/HomePage';
+import LoginPage from './Pages/LoginPage';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import ChatPage from './Pages/ChatPage';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 function App() {
   return (
+  <div className='App'>
+
     <BrowserRouter>
       <Routes>
-        <Route path='/' Component={HomePage}></Route>
+        <Route path='/' Component={LoginPage}></Route>
         <Route path='/chats' Component={ChatPage}></Route>
       </Routes>
     </BrowserRouter>
+  </div>
+
   );
 }
 

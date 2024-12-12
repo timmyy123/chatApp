@@ -55,7 +55,7 @@ const authUser = asyncHandler(async(req, res) => {
   }
 })
 
-const allUsers = asyncHandler(async (req, res) => {
+const searchUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
       $or: [
@@ -64,7 +64,8 @@ const allUsers = asyncHandler(async (req, res) => {
       ]
     }: {}
 
-    const users = await User.find(keyword)
+    const users = await User.find(keyword,{password: 0})
+    res.send(users)
 })
 
-module.exports = {registerUser, authUser}
+module.exports = {registerUser, authUser, searchUsers}
