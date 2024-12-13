@@ -3,6 +3,7 @@ import LoginPage from './Pages/LoginPage';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import ChatPage from './Pages/ChatPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import SignupPage from './Pages/SignupPage';
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/' Component={LoginPage}></Route>
+        <Route path='/signup' Component={SignupPage}></Route>
         <Route path='/chats' Component={ChatPage}></Route>
       </Routes>
     </BrowserRouter>

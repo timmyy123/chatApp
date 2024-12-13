@@ -1,12 +1,12 @@
 import React from 'react'
-import SigninForm from '../Components/SigninForm'
+import RegisterForm from '../Components/RegisterForm'
 
-const LoginPage = () => {
+const SignupPage = () => {
   return (
     <main className='container d-flex align-items-center justify-content-center vh-100'>
-      <SigninForm></SigninForm>
+      <RegisterForm></RegisterForm>
     </main>
   )
 }
 
-export default LoginPage
+export default SignupPage

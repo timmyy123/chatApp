@@ -1,3 +1,25 @@
 div.customCard{
   background-color: hsla(159, 43%, 83%, 0.429) ;
+  border-radius: 25px;
+}
+
+button.customBtn{
+  background-color: rgba(127, 255, 255, 0.426);
+  border-radius: 20px;
+  border: none;
+  color: rgba(0, 71, 249, 0.542);
+  width: 100%;
+
+}
+
+button.customBtn:hover {
+  background-color: rgba(0, 255, 255, 0.6);
+  box-shadow: 0px 2px 10px rgba(127, 255, 255, 0.5);
+}
+
+.title {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #619d969b;
 }
