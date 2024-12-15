@@ -1,5 +1,5 @@
 import React from 'react'
-import SigninForm from '../Components/SigninForm'
+import SigninForm from '../Components/Authentication/SigninForm'
 
 const LoginPage = () => {
   return (

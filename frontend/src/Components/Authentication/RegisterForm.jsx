@@ -1,20 +1,52 @@
 import React, { useState } from 'react'
 import styles from './Form.module.css'
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
   })
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const handelSubmit = async () => {
+  const handelSubmit = async (e) => {
+    e.preventDefault()
     setLoading(true)
+    const { name, email, password, confirmPassword } = formData;
+
+    if(name && email && password && confirmPassword) {
+      if (password === confirmPassword) {
+        try {
+          const {data} = await axios.post(
+            'api/user',
+            {
+              name,
+              email,
+              password
+            }
+          )
+          localStorage.setItem('userInfo', JSON.stringify(data))
+          setLoading(false)
+          navigate('/chats')
+        } catch(error){
+          alert(error.response.data.message)
+        }
+      } else {
+        alert("Passwords don't match")
+        setLoading(false)
+      }
+    } else {
+      alert('Please enter all the fields')
+      setLoading(false)
+    }
+
+
+
 
   }
 
@@ -36,17 +68,17 @@ const RegisterForm = () => {
           </div>
           <div className='col-12 col-lg-6'>
             <label htmlFor="email" className='form-label'>Email</label>
-            <input type="text" className='form-control' id='email' name='email' value={formData.email} placeholder='Enter your email' onChange={handleChange} />
+            <input type="email" className='form-control' id='email' name='email' value={formData.email} placeholder='Enter your email' onChange={handleChange} />
           </div>
         </div>
         <div className='row'>
           <div className='col-12 col-md-6'>
             <label htmlFor="password" className='form-label'>Password</label>
-            <input type="text" className='form-control' id='password' name='password' value={formData.name} placeholder='Choose a password' onChange={handleChange} />
+            <input type="password" className='form-control' id='password' name='password' value={formData.password} placeholder='Choose a password' onChange={handleChange} />
           </div>
           <div className='col-12 col-md-6'>
             <label htmlFor="confirmPassword" className='form-label'>Confirm Password</label>
-            <input type="text" className='form-control' id='confirmPassword' name='confirmPassword' value={formData.confirmPassword} placeholder='Confirm your password' onChange={handleChange} />
+            <input type="password" className='form-control' id='confirmPassword' name='confirmPassword' value={formData.confirmPassword} placeholder='Confirm your password' onChange={handleChange} />
           </div>
         </div>
         <div className='row'>

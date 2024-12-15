@@ -18,12 +18,12 @@ const SigninForm = () => {
 
     if(emailValue && passwordValue) {
       try{
-        const {response} = await axios.post('/api/user/login', {
+        const {data} = await axios.post('/api/user/login', {
           email: emailValue,
           password: passwordValue
         })
 
-        localStorage.setItem('userInfo', JSON.stringify(response))
+        localStorage.setItem('userInfo', JSON.stringify(data))
         setLoading(false)
         navigate('/chats')
 
