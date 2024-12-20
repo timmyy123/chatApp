@@ -1,14 +1,59 @@
-import React from "react";
+import React from 'react'
+import { ChatState } from './Context/ChatProvider'
+import axios from 'axios'
+import UserListItem from './UserListItem'
 
-const SearchUser = ({ onClose }) => {
+const SearchUser = () => {
+  const [search, setSearch] = React.useState('')
+  const [searchResults, setSearchResults] = React.useState([])
+  const [loading, setLoading] = React.useState(false)
+
+  const { user } = ChatState()
+
+  const handleSearch = async () => {
+    if (!search.trim()) return
+
+    try {
+      setLoading(true)
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` }
+      }
+      const { data } = await axios.get(`/api/user?search=${search}`, config)
+      setSearchResults(data)
+      setLoading(false)
+    } catch (error) {
+      console.error(error.message)
+      setLoading(false)
+
+    }
+  }
   return (
-    <div className="search-user">
-      <div>
-        <input type="text" placeholder="Search users..." />
-        <button onClick={onClose}>Close</button>
+    <div
+      id='searchUserOffcanvas'
+      className='offcanvas offcanvas-start'
+      tabIndex={-1}
+      aria-labelledby='searchUserOffcanvasLabel'
+    >
+      <div className='offcanvas-header'>
+        <h5 id='searchUserOffcanvasLabel'>Search Users</h5>
+        <button type='button' className='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>
+      </div>
+      <div className='offcanvas-body'>
+        <div className='input-group mb-3'>
+          <input type="text"
+            className='form-control'
+            placeholder='Search by name or email'
+            value={search}
+            onChange={e => setSearch(e.target.value)} />
+          <button
+            className='btn btn-primary'
+          >
+            Search
+          </button>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SearchUser;
+export default SearchUser

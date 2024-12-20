@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ChatPage from './Pages/ChatPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import SignupPage from './Pages/SignupPage';
 import ChatProvider from './Components/Context/ChatProvider';
 
