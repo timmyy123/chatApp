@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import axios from 'axios'
 import UserListItem from './UserListItem'
@@ -27,6 +27,33 @@ const SearchUser = () => {
 
     }
   }
+
+  useEffect(() => {
+    if (search.trim()) {
+      handleSearch()
+    }
+  }, [search])
+
+  const handleOffcanvasHide = () => {
+    setSearch('')
+    setSearchResults([])
+  }
+  useEffect(() => {
+    const offcanvasElement = document.getElementById('searchUserOffcanvas')
+    
+
+    offcanvasElement.addEventListener(
+      'hidden.bs.offcanvas',
+      handleOffcanvasHide
+    )
+
+    return () => {
+      offcanvasElement.removeEventListener(
+        'hidden.bs.offcanvas',
+        handleOffcanvasHide
+      )
+    }
+  })
   return (
     <div
       id='searchUserOffcanvas'
@@ -45,12 +72,30 @@ const SearchUser = () => {
             placeholder='Search by name or email'
             value={search}
             onChange={e => setSearch(e.target.value)} />
-          <button
+          {/* <button
             className='btn btn-primary'
+            type='button'
+            onClick={handleSearch}
           >
             Search
-          </button>
+          </button> */}
         </div>
+        {loading ? (
+          <div>
+            <i className='bi bi-arrow-clockwise spinner-icon'></i>
+          </div>
+        ) : (
+          <div className='list-group'>
+            {searchResults.length > 0 ? (
+              searchResults.map(user => (
+                <UserListItem key={user._id} user={user}></UserListItem>
+              ))
+            ) : (
+              <div>No users found</div>
+            )}
+          </div>
+        )
+        }
       </div>
     </div>
   )
