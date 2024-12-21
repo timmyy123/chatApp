@@ -3,11 +3,11 @@ import UserAvatar from "./UserAvatar";
 
 const TopBar = () => {
   return (
-    <div className="row navbar" style={{ backgroundColor: "#18bfec" }}>
+    <div className="row navbar" style={{ backgroundColor: "#edbee8" }}>
       <div className="col-3">
         <button 
         type="button"
-        className="btn btn-primary mx-2"
+        className="btn btn-danger mx-2"
           data-bs-toggle="offcanvas"
           data-bs-target="#searchUserOffcanvas"
           aria-controls="searchUserOffcanvas"

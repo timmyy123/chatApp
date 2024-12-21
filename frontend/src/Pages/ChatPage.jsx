@@ -13,10 +13,10 @@ const ChatPage = () => {
     <main style={{ width: "100%" }}>
       <TopBar />
       {/* Always render SearchUser */}
-      <SearchUser />
+      {user && <SearchUser />}
       <div className="row">
         <div className="col-4">
-          <ChatsMenu fetchAgain={fetchAgain}></ChatsMenu>
+          {user&&<ChatsMenu fetchAgain={fetchAgain}></ChatsMenu>}
         </div>
       </div>
     </main>

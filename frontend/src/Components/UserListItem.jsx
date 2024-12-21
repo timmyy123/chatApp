@@ -1,10 +1,11 @@
 import React from 'react'
 
-const UserListItem = ({user}) => {
+const UserListItem = ({user, handleFunction}) => {
   return (
     <div
     className='list-group-item list-group-item-action'
     style={{cursor: 'pointer'}}
+    onClick={handleFunction}
     >
       <div className='d-flex align-items-center'>
         <div

@@ -2,12 +2,14 @@ import React, { useRef, useState } from 'react'
 import styles from './Form.module.css'
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import { ChatState } from '../Context/ChatProvider'
 
 const SigninForm = () => {
   const email = useRef(null)
   const password = useRef(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const {setUser} = ChatState()
   console.log('rendered')
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -24,6 +26,7 @@ const SigninForm = () => {
         })
 
         localStorage.setItem('userInfo', JSON.stringify(data))
+        setUser(data)
         setLoading(false)
         navigate('/chats')
 

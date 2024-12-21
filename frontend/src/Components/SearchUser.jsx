@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { ChatState } from './Context/ChatProvider'
+import { Toast } from 'bootstrap/dist/js/bootstrap.bundle.min'
 import axios from 'axios'
 import UserListItem from './UserListItem'
 
@@ -8,7 +9,7 @@ const SearchUser = () => {
   const [searchResults, setSearchResults] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
-  const { user } = ChatState()
+  const { user, chats, setChats, setSelectedChat } = ChatState()
 
   const handleSearch = async () => {
     if (!search.trim()) return
@@ -28,9 +29,33 @@ const SearchUser = () => {
     }
   }
 
+  const selectUser = async (userId) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+      const {data} = await axios.post('/api/chat', {userId}, config)
+      if(!chats.find((chat) => chat._id === data._id)) setChats([...chats, data])
+      setSelectedChat(data)
+    } catch (error) {
+      const toastElement = document.getElementById('errorToast')
+      const toastBodyElement = document.getElementById('toastBody')
+      toastBodyElement.textContent = error.message
+
+      const toast = new Toast(toastElement, {
+        autohide: false
+      })
+    }
+  }
+
   useEffect(() => {
     if (search.trim()) {
       handleSearch()
+    } else {
+      setSearchResults([])
     }
   }, [search])
 
@@ -88,7 +113,7 @@ const SearchUser = () => {
           <div className='list-group'>
             {searchResults.length > 0 ? (
               searchResults.map(user => (
-                <UserListItem key={user._id} user={user}></UserListItem>
+                <UserListItem key={user._id} user={user} handleFunction={() => selectUser(user._id)}></UserListItem>
               ))
             ) : (
               <div>No users found</div>
