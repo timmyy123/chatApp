@@ -9,7 +9,7 @@ const SearchUser = () => {
   const [searchResults, setSearchResults] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
-  const { user, chats, setChats, setSelectedChat } = ChatState()
+  const { user, chats, setChats, setSelectedChat, setError } = ChatState()
 
   const handleSearch = async () => {
     if (!search.trim()) return
@@ -41,13 +41,8 @@ const SearchUser = () => {
       if(!chats.find((chat) => chat._id === data._id)) setChats([...chats, data])
       setSelectedChat(data)
     } catch (error) {
-      const toastElement = document.getElementById('errorToast')
-      const toastBodyElement = document.getElementById('toastBody')
-      toastBodyElement.textContent = error.message
-
-      const toast = new Toast(toastElement, {
-        autohide: false
-      })
+      console.log(error.message)
+      setError(error.message)    
     }
   }
 
@@ -82,7 +77,7 @@ const SearchUser = () => {
   return (
     <div
       id='searchUserOffcanvas'
-      className='offcanvas offcanvas-start'
+      className='offcanvas offcanvas-start col-4'
       tabIndex={-1}
       aria-labelledby='searchUserOffcanvasLabel'
     >

@@ -1,43 +1,41 @@
 import './App.css';
 import LoginPage from './Pages/LoginPage';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import ChatPage from './Pages/ChatPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 import SignupPage from './Pages/SignupPage';
-import ChatProvider from './Components/Context/ChatProvider';
+import { ChatState } from './Components/Context/ChatProvider';
 
 
 function App() {
+  const { error, setError} = ChatState()
   return (
     <div className='App'>
-      <div
-        className="toast-container position-fixed bottom-0 end-0 p-3"
-        id="toastContainer"
-        style={{ zIndex: 1055 }}
-      >
+      {error && (
         <div
-          className="toast"
-          id="errorToast"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
+          className="toast-container position-fixed bottom-0 end-0 p-3"
+          style={{ zIndex: 1051 }}
         >
-          <div className="toast-header">
-            <strong className="me-auto">Error</strong>
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="toast"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div className="toast-body" id="toastBody">
+          <div
+            className="toast show align-items-center text-bg-danger border-0"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          >
+            <div className="d-flex">
+              <div className="toast-body">{error}</div>
+              <button
+                type="button"
+                className="btn-close btn-close-white me-2 m-auto"
+                aria-label="Close"
+                onClick={() => setError(null)} // Dismiss the toast
+              ></button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       <Routes>
         <Route path='/' Component={LoginPage}></Route>
         <Route path='/signup' Component={SignupPage}></Route>

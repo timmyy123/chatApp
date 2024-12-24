@@ -9,7 +9,7 @@ const SigninForm = () => {
   const password = useRef(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const {setUser} = ChatState()
+  const {setUser, setError} = ChatState()
   console.log('rendered')
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -31,13 +31,12 @@ const SigninForm = () => {
         navigate('/chats')
 
       } catch (error) {
-        alert(
-          error || 'Unexpected error'
-        )
+
+        setError(error || 'Unexpected error')
         setLoading(false)
       }
     } else {
-      alert('Please enter email and password')
+      setError('Please enter emial and password')
       setLoading(false)
     }
   
