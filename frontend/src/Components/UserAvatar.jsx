@@ -1,8 +1,13 @@
 import React from 'react'
 
-const UserAvatar = () => {
+const UserAvatar = ({ userInfo, handleclick }) => {
+  console.log(userInfo)
   return (
-    <div className='d-flex justify-content-end p-2'><img src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg" alt="" style={{width: '10%', aspectRatio: '1'}}/></div>
+    <div
+      className='me-3 justify-content-center align-items-center d-flex'
+      style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#f0f0f0' }}
+    >{userInfo.name.charAt(0).toUpperCase()}
+    </div>
   )
 }
 

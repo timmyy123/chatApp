@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const ChatsMenu = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false)
-  const { selectedChat, setSelectedChat, user, chats, setChats, setError } = ChatState()
+  const { user, chats, setChats } = ChatState()
 
   const fetchChats = async () => {
     try {
@@ -21,7 +21,7 @@ const ChatsMenu = ({ fetchAgain }) => {
       setLoading(false)
     } catch (error) {
       console.error(error.message)
-      setError(error.message)
+      // setError(error.message)
       setLoading(false)
     }
   }
@@ -31,7 +31,7 @@ const ChatsMenu = ({ fetchAgain }) => {
   }, [fetchAgain])
   return (
     <div
-      className={`d-flex flex-column bg-white vh-100 w-100`}
+      className={`d-flex flex-column bg-warning vh-100 w-100 p-2`}
     >
       <div
         className='d-flex w-100 align-items-center mb-3 p-2'
@@ -39,7 +39,7 @@ const ChatsMenu = ({ fetchAgain }) => {
       >
         <span className='fw-bold fs-3' style={{ fontFamily: "Work Sans" }}>My Chats</span>
       </div>
-      <div className='d-flex flex-column p-2'>
+      <div className='d-flex flex-column'>
 
         {loading ? (
           <div className="d-flex justify-content-center" >
@@ -53,7 +53,6 @@ const ChatsMenu = ({ fetchAgain }) => {
           </div>
         ) : (
           <div className="text-center text-muted">No chats available</div>
-
         )
         }
       </div>

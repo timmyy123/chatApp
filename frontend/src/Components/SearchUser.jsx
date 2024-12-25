@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { ChatState } from './Context/ChatProvider'
-import { Toast } from 'bootstrap/dist/js/bootstrap.bundle.min'
 import axios from 'axios'
 import UserListItem from './UserListItem'
 
@@ -9,7 +8,7 @@ const SearchUser = () => {
   const [searchResults, setSearchResults] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
-  const { user, chats, setChats, setSelectedChat, setError } = ChatState()
+  const { user, chats, setChats, setSelectedChat, createToast } = ChatState()
 
   const handleSearch = async () => {
     if (!search.trim()) return
@@ -41,8 +40,8 @@ const SearchUser = () => {
       if(!chats.find((chat) => chat._id === data._id)) setChats([...chats, data])
       setSelectedChat(data)
     } catch (error) {
+      createToast('Failed to select user')
       console.log(error.message)
-      setError(error.message)    
     }
   }
 
@@ -92,13 +91,6 @@ const SearchUser = () => {
             placeholder='Search by name or email'
             value={search}
             onChange={e => setSearch(e.target.value)} />
-          {/* <button
-            className='btn btn-primary'
-            type='button'
-            onClick={handleSearch}
-          >
-            Search
-          </button> */}
         </div>
         {loading ? (
           <div>

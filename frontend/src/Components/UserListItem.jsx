@@ -1,17 +1,16 @@
 import React from 'react'
+import UserAvatar from './UserAvatar'
 
-const UserListItem = ({user, handleFunction}) => {
+const UserListItem = ({ user, handleFunction }) => {
   return (
     <div
-    className='list-group-item list-group-item-action'
-    style={{cursor: 'pointer'}}
-    onClick={handleFunction}
+      className='list-group-item list-group-item-action'
+      style={{ cursor: 'pointer' }}
+      onClick={handleFunction}
+      data-bs-dismiss='offcanvas'
     >
       <div className='d-flex align-items-center'>
-        <div
-        className='me-3 justify-content-center align-items-center d-flex'
-        style={{width:'40px', height:'40px', borderRadius: '50%', backgroundColor: '#f0f0f0'}}
-        ><h2>{user.name.charAt(0).toUpperCase()}</h2></div>
+        <UserAvatar userInfo={user} />
         <div>
           <strong>{user.name}</strong>
           <br />

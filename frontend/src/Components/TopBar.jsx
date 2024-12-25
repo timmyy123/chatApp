@@ -1,7 +1,10 @@
 import React from "react";
 import UserAvatar from "./UserAvatar";
+import { ChatState } from "./Context/ChatProvider";
 
 const TopBar = () => {
+  const { user } = ChatState();
+  console.log(user);
   return (
     <div className="row navbar" style={{ backgroundColor: "#edbee8" }}>
       <div className="col-3">
@@ -22,8 +25,8 @@ const TopBar = () => {
       <div className="col-6 text-center">
         <h3>TiTalk</h3>
       </div>
-      <div className="col-3 d-flex align-items-center">
-        <UserAvatar />
+      <div className="col-3 d-flex align-items-center justify-content-end">
+        {user && <UserAvatar userInfo={user}/>}
       </div>
     </div>
   );

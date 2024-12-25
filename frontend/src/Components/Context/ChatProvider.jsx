@@ -1,27 +1,74 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ChatContext = createContext()
+const ChatContext = createContext();
 
-const ChatProvider = ({children}) => {
-  const [selectedChat, setSelectedChat] = useState()
-  const [user, setUser] = useState()
-  const [notification, setNotification] = useState([])
-  const [chats, setChats] = useState()
-  const [error, setError] = useState()
-  const navigate = useNavigate()
+const ChatProvider = ({ children }) => {
+  const [selectedChat, setSelectedChat] = useState(JSON.parse(localStorage.getItem('selectedChat'))||undefined);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo'))||undefined);
+  const [notification, setNotification] = useState([]);
+  const [chats, setChats] = useState();
+  const [error, setError] = useState();
+  const [toasts, setToasts] = useState([]); // For managing toasts
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
-    console.log(userInfo)
-    setUser(userInfo)
-    console.log(user, 'user')
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    setUser(userInfo);
+    if (!userInfo) navigate('/');
+  }, [navigate]);
 
-    if(!userInfo) navigate('/')
-  }, [navigate])
+  useEffect(() => {
+    if (selectedChat) {
+      localStorage.setItem('selectedChat', JSON.stringify(selectedChat))
+    } else {
+      localStorage.removeItem('selectedChat')
+    }
+  }, [selectedChat])
+
+  // Function to create a toast
+  const createToast = (message, type = 'danger') => {
+    const id = Date.now(); // Unique ID for each toast
+
+    const toast = (
+      <div
+        key={id}
+        className={`toast show align-items-center text-bg-${type} border-0 mb-2`}
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+        style={{
+          zIndex: 1051,
+        }}
+      >
+        <div className="d-flex">
+          <div className="toast-body">{message}</div>
+          <button
+            type="button"
+            className="btn-close btn-close-white me-2 m-auto"
+            aria-label="Close"
+            onClick={() => removeToast(id)}
+          ></button>
+        </div>
+      </div>
+    );
+
+    // Add toast to the state
+    setToasts((prevToasts) => [...prevToasts, { id, toast }]);
+
+    // Auto-remove the toast after 3 seconds
+    setTimeout(() => removeToast(id), 3000);
+  };
+
+  // Function to remove a specific toast
+  const removeToast = (id) => {
+    setToasts((prevToasts) => prevToasts.filter((t) => t.id !== id));
+  };
+
   return (
     <ChatContext.Provider
-      value={{selectedChat,
+      value={{
+        selectedChat,
         setSelectedChat,
         user,
         setUser,
@@ -30,15 +77,28 @@ const ChatProvider = ({children}) => {
         chats,
         setChats,
         error,
-        setError
-      }}>
+        setError,
+        createToast, // Expose the toast creation function
+      }}
+    >
       {children}
+
+      {/* Toast container positioned at the top */}
+      <div
+        className="toast-container position-fixed top-0 end-0 p-3"
+        style={{
+          zIndex: 1051,
+          maxWidth: '400px',
+        }}
+      >
+        {toasts.map((t) => t.toast)}
+      </div>
     </ChatContext.Provider>
-  )
-}
+  );
+};
 
 export const ChatState = () => {
-  return useContext(ChatContext)
-}
+  return useContext(ChatContext);
+};
 
-export default ChatProvider
+export default ChatProvider;

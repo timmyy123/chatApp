@@ -9,7 +9,7 @@ const SigninForm = () => {
   const password = useRef(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-  const {setUser, setError} = ChatState()
+  const {setUser, createToast} = ChatState()
   console.log('rendered')
   const handleSubmit = async(e) => {
     e.preventDefault()
@@ -32,11 +32,11 @@ const SigninForm = () => {
 
       } catch (error) {
 
-        setError(error || 'Unexpected error')
+        createToast(error || 'Unexpected error')
         setLoading(false)
       }
     } else {
-      setError('Please enter emial and password')
+      createToast('Please enter emial and password')
       setLoading(false)
     }
   

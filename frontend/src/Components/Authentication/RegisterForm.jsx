@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styles from './Form.module.css'
 import {useNavigate} from 'react-router-dom'
+import { ChatState } from '../Context/ChatProvider'
 import axios from 'axios'
 
 const RegisterForm = () => {
@@ -13,6 +14,7 @@ const RegisterForm = () => {
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { createToast } = ChatState()
 
   const handelSubmit = async (e) => {
     e.preventDefault()
@@ -34,20 +36,16 @@ const RegisterForm = () => {
           setLoading(false)
           navigate('/chats')
         } catch(error){
-          alert(error.response.data.message)
+          createToast(error.response.data.message)
         }
       } else {
-        alert("Passwords don't match")
+        createToast("Passwords don't match")
         setLoading(false)
       }
     } else {
-      alert('Please enter all the fields')
+      createToast('Please enter all the fields')
       setLoading(false)
     }
-
-
-
-
   }
 
   const handleChange = (e) => {
