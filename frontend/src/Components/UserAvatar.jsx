@@ -1,7 +1,6 @@
 import React from 'react'
 
 const UserAvatar = ({ userInfo, handleclick }) => {
-  console.log(userInfo)
   return (
     <div
       className='me-3 justify-content-center align-items-center d-flex'

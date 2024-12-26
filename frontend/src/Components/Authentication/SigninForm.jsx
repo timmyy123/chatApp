@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react'
 import styles from './Form.module.css'
-import axios from 'axios'
-import {useNavigate} from 'react-router-dom'
+import useAuthNavigate from '../../hooks/useAuthNavigate'
 import { ChatState } from '../Context/ChatProvider'
+import UseApi from '../../hooks/UseApi'
 
 const SigninForm = () => {
   const email = useRef(null)
   const password = useRef(null)
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
-  const {setUser, createToast} = ChatState()
-  console.log('rendered')
+  const {authNavigate} = useAuthNavigate()
+  const {user, setUser, createToast} = ChatState()
+  const api = UseApi()
+  console.log(user)
   const handleSubmit = async(e) => {
     e.preventDefault()
     setLoading(true)
@@ -20,7 +21,7 @@ const SigninForm = () => {
 
     if(emailValue && passwordValue) {
       try{
-        const {data} = await axios.post('/api/user/login', {
+        const {data} = await api.post('/api/user/login', {
           email: emailValue,
           password: passwordValue
         })
@@ -28,15 +29,15 @@ const SigninForm = () => {
         localStorage.setItem('userInfo', JSON.stringify(data))
         setUser(data)
         setLoading(false)
-        navigate('/chats')
+        authNavigate('/chats')
 
       } catch (error) {
 
-        createToast(error || 'Unexpected error')
+        createToast(error.message || 'Unexpected error')
         setLoading(false)
       }
     } else {
-      createToast('Please enter emial and password')
+      createToast('Please enter email and password')
       setLoading(false)
     }
   
@@ -64,7 +65,7 @@ const SigninForm = () => {
             <button type='submit' className={`btn btn-primary  ${styles.customBtn}`} disabled={loading}>{loading? 'Loading...':'Sign In'}</button>
           </div>
           <div className='col-12 col-md-6 mt-3 px-1'>
-            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>navigate('/signup')}>Sign Up</button>
+            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>authNavigate('/signup')}>Sign Up</button>
           </div>
         </div>
       </form>

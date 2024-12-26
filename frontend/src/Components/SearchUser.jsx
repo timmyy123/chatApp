@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { ChatState } from './Context/ChatProvider'
-import axios from 'axios'
 import UserListItem from './UserListItem'
+import UseApi from '../hooks/UseApi'
 
 const SearchUser = () => {
   const [search, setSearch] = React.useState('')
   const [searchResults, setSearchResults] = React.useState([])
   const [loading, setLoading] = React.useState(false)
+  const api = UseApi()
 
   const { user, chats, setChats, setSelectedChat, createToast } = ChatState()
 
@@ -18,7 +19,7 @@ const SearchUser = () => {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` }
       }
-      const { data } = await axios.get(`/api/user?search=${search}`, config)
+      const { data } = await api.get(`/api/user?search=${search}`, config)
       setSearchResults(data)
       setLoading(false)
     } catch (error) {
@@ -36,7 +37,7 @@ const SearchUser = () => {
           Authorization: `Bearer ${user.token}`
         }
       }
-      const {data} = await axios.post('/api/chat', {userId}, config)
+      const {data} = await api.post('/api/chat', {userId}, config)
       if(!chats.find((chat) => chat._id === data._id)) setChats([...chats, data])
       setSelectedChat(data)
     } catch (error) {

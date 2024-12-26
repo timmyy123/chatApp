@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import { data } from 'react-router-dom'
-import axios from 'axios'
 import { getOtherUser } from './config/ChatLogics'
 import UserAvatar from './UserAvatar'
+import UseApi from '../hooks/UseApi'
 
 
 const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
+  const api = UseApi()
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
@@ -23,7 +24,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
         }
       }
       setLoading(true)
-      const { data } = await axios.get(`/api/message/${selectedChat._id}`, config)
+      const { data } = await api.get(`/api/message/${selectedChat._id}`, config)
       setMessages(data)
       setLoading(false)
     } catch (error) {
@@ -43,7 +44,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
         }
       }
 
-      const { data } = await axios.post(
+      const { data } = await api.post(
         '/api/message',
         {
           content: newMessage,

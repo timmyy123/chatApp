@@ -18,9 +18,9 @@ function App() {
         <Route path='/chats'
           element=
           {
-            <PrivateRoute>
-              <ChatPage></ChatPage>
-            </PrivateRoute>
+            // <PrivateRoute>
+              <ChatPage/>
+            // </PrivateRoute> 
           }>
         </Route>
       </Routes>

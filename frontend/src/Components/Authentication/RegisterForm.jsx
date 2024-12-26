@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styles from './Form.module.css'
-import {useNavigate} from 'react-router-dom'
+import useAuthNavigate from '../../hooks/useAuthNavigate'
 import { ChatState } from '../Context/ChatProvider'
-import axios from 'axios'
+import UseApi from '../../hooks/UseApi'
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -13,8 +13,9 @@ const RegisterForm = () => {
   })
 
   const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
-  const { createToast } = ChatState()
+  const {authNavigate} = useAuthNavigate()
+  const { createToast, setUser } = ChatState()
+  const api = UseApi()
 
   const handelSubmit = async (e) => {
     e.preventDefault()
@@ -24,7 +25,7 @@ const RegisterForm = () => {
     if(name && email && password && confirmPassword) {
       if (password === confirmPassword) {
         try {
-          const {data} = await axios.post(
+          const {data} = await api.post(
             'api/user',
             {
               name,
@@ -33,8 +34,9 @@ const RegisterForm = () => {
             }
           )
           localStorage.setItem('userInfo', JSON.stringify(data))
+          setUser(data)
           setLoading(false)
-          navigate('/chats')
+          authNavigate('/chats')
         } catch(error){
           createToast(error.response.data.message)
         }
@@ -84,7 +86,7 @@ const RegisterForm = () => {
             <button type='submit' className={`btn btn-primary  ${styles.customBtn}`} disabled={loading}>{loading ? 'Loading...' : 'Sign Up'}</button>
           </div>
           <div className='col-12 col-md-6 mt-3 px-2'>
-            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>navigate('/')}>Sign In</button>
+            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>authNavigate('/')}>Sign In</button>
           </div>
         </div>
       </form>

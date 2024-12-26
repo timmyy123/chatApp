@@ -8,16 +8,31 @@ const ChatProvider = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo'))||undefined);
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState();
-  const [error, setError] = useState();
   const [toasts, setToasts] = useState([]); // For managing toasts
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    setUser(userInfo);
-    if (!userInfo) navigate('/');
-  }, [navigate]);
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'))||undefined;
+  //   setUser(userInfo);
+  //   if (!userInfo) navigate('/');
+  // }, [navigate]);
+  console.log('context')
 
+  const logout = () => {
+    // Clear user data from state and localStorage
+    setUser(undefined);
+    navigate('/');
+    setSelectedChat(undefined);
+    setNotification([]);
+    setChats([]);
+  
+    // Clear user data from localStorage
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('selectedChat');
+  
+    // Redirect to login page
+  };
+  
   useEffect(() => {
     if (selectedChat) {
       localStorage.setItem('selectedChat', JSON.stringify(selectedChat))
@@ -76,9 +91,8 @@ const ChatProvider = ({ children }) => {
         setNotification,
         chats,
         setChats,
-        error,
-        setError,
         createToast, // Expose the toast creation function
+        logout
       }}
     >
       {children}

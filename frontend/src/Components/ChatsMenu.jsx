@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import ChatListItem from './ChatListItem'
-import axios from 'axios'
+import UseApi from '../hooks/UseApi'
 
 const ChatsMenu = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false)
   const { user, chats, setChats } = ChatState()
+  const api = UseApi()
 
   const fetchChats = async () => {
     try {
@@ -16,7 +17,7 @@ const ChatsMenu = ({ fetchAgain }) => {
         }
       }
 
-      const { data } = await axios.get('/api/chat', config)
+      const { data } = await api.get('/api/chat', config)
       setChats(data)
       setLoading(false)
     } catch (error) {
