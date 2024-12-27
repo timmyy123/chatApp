@@ -66,10 +66,12 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
   return (
     <div>
       {selectedChat ? (
-        <div className='d-flex flex-column bg-white vh-100'>
+        <div className='d-flex flex-column bg-white' style={{ height: '92vh' }}>
 
-            {selectedChat.isGroupChat ? selectedChat.name : (
-              <div className='bg-light border-bottom d-flex align-items-center p-2'>
+          {selectedChat.isGroupChat ? selectedChat.name : (
+            <div >
+
+              <div className='bg-light border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px'}}>
                 <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
                 <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />
@@ -77,13 +79,67 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
                   {getOtherUser(user, selectedChat.users).name}
                 </h5>
               </div>
+              <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center': ''} p-3`}  style={{ height: '77vh'}}>
+                {loading ? (
+                  <div className="text-center">
+                    <div className="spinner-border" role="status">
+                    </div>
+                  </div>
+                ) : (
+                  messages.map((msg) => (
+                    <div
+                      key={msg._id}
+                      className={`d-flex my-2 ${msg.sender._id === user._id ? 'justify-content-end' : 'justify-content-start'}`}>
+                      {msg.sender._id !== user._id ?
+                        (
+                          <>
+                            <UserAvatar userInfo={msg.sender}></UserAvatar>
+                            <div className='card px-2  bg-light text-dark justify-content-center'>
 
-            )}
+                              {msg.content}
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className='card px-2 bg-warning text-white justify-content-center'>
+
+                              {msg.content}
+                            </div>
+                            <UserAvatar userInfo={msg.sender}></UserAvatar>
+                          </>
+
+                        )
+                      }
+
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+
+          )}
+          <div className='p-2 border-top' style={{ height: '8vh'}}>
+            <div className='input-group'>
+              <input type="text"
+              className='form-control'
+              placeholder='Type a message' 
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}/>
+              <button className='btn btn-primary'
+              onClick={() => sendMessage()}
+              disabled={!newMessage.trim()}>
+            
+                send
+              </button>
+            </div>
+
+          </div>
 
 
         </div>
       ) : (
-        <div className='d-flex flex-column bg-white vh-100 w-100'>
+        <div className='d-flex flex-column bg-white w-100 align-items-center justify-content-center' style={{ height: '92vh' }}>
           <h4>Select a chat to start messaging</h4>
         </div>
       )}

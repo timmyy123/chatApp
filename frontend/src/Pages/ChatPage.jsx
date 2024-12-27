@@ -12,7 +12,7 @@ const ChatPage = () => {
   const { user, selectedChat } = ChatState();
 
   return (
-    <main className="w-100 container-fluid">
+    <main className="w-100 container-fluid vh-100 d-flex flex-column">
       <TopBar />
       {/* Always render SearchUser */}
       {user && <SearchUser />}

@@ -5,7 +5,7 @@ import { ChatState } from "./Context/ChatProvider";
 const TopBar = () => {
   const { user } = ChatState();
   return (
-    <div className="row navbar" style={{ backgroundColor: "#edbee8" }}>
+    <div className="row navbar p-1" style={{ backgroundColor: "#edbee8", height: '8vh', minHeight: '50px'}}>
       <div className="col-3">
         <button 
         type="button"

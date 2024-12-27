@@ -32,7 +32,8 @@ const ChatsMenu = ({ fetchAgain }) => {
   }, [fetchAgain])
   return (
     <div
-      className={`d-flex flex-column bg-warning vh-100 w-100 p-2`}
+      className={`d-flex flex-column bg-warning  w-100 p-2`}
+      style={{ height: '92vh'}}
     >
       <div
         className='d-flex w-100 align-items-center mb-3 p-2'
