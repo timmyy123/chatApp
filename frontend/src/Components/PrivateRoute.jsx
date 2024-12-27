@@ -1,11 +1,24 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { ChatState } from './Context/ChatProvider';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, requiresAuth = true }) => {
   const { user } = ChatState();
+  const location = useLocation(); // Get the current location
 
-  return user ? children : <Navigate to="/" />;
+  if (requiresAuth && !user) {
+    // Redirect to the login page if authentication is required but the user is not logged in
+    return <Navigate to="/" replace />;
+  }
+
+  if (!requiresAuth && user) {
+    // Redirect to the previous page or default to "/chats" if no previous page is stored
+    const previousPage = location.state?.from?.pathname || "/chats";
+    return <Navigate to={previousPage} replace />;
+  }
+
+  // Default: Allow access to the children
+  return children;
 };
 
 export default PrivateRoute;

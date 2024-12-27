@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import styles from './Form.module.css'
-import useAuthNavigate from '../../hooks/useAuthNavigate'
+import { useNavigate } from 'react-router-dom'
 import { ChatState } from '../Context/ChatProvider'
 import UseApi from '../../hooks/UseApi'
 
@@ -8,7 +8,7 @@ const SigninForm = () => {
   const email = useRef(null)
   const password = useRef(null)
   const [loading, setLoading] = useState(false)
-  const {authNavigate} = useAuthNavigate()
+  const navigate = useNavigate()
   const {user, setUser, createToast} = ChatState()
   const api = UseApi()
   console.log(user)
@@ -29,7 +29,7 @@ const SigninForm = () => {
         localStorage.setItem('userInfo', JSON.stringify(data))
         setUser(data)
         setLoading(false)
-        authNavigate('/chats')
+        navigate('/chats')
 
       } catch (error) {
 
@@ -65,7 +65,7 @@ const SigninForm = () => {
             <button type='submit' className={`btn btn-primary  ${styles.customBtn}`} disabled={loading}>{loading? 'Loading...':'Sign In'}</button>
           </div>
           <div className='col-12 col-md-6 mt-3 px-1'>
-            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>authNavigate('/signup')}>Sign Up</button>
+            <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>navigate('/signup')}>Sign Up</button>
           </div>
         </div>
       </form>

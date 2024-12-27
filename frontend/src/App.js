@@ -13,16 +13,9 @@ function App() {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/' element={<LoginPage />}></Route>
-        <Route path='/signup' element={<SignupPage />}></Route>
-        <Route path='/chats'
-          element=
-          {
-            // <PrivateRoute>
-              <ChatPage/>
-            // </PrivateRoute> 
-          }>
-        </Route>
+        <Route path="/chats" element={<PrivateRoute requiresAuth={true}><ChatPage /></PrivateRoute>} />
+        <Route path="/signup" element={<PrivateRoute requiresAuth={false}><SignupPage /></PrivateRoute>} />
+        <Route path="/" element={<PrivateRoute requiresAuth={false}><LoginPage /></PrivateRoute>} />
       </Routes>
     </div>
   );
