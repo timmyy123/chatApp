@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import { data } from 'react-router-dom'
 import { getOtherUser } from './config/ChatLogics'
@@ -11,6 +11,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
   const api = UseApi()
+  const chatEndRef = useRef(null)
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
@@ -60,9 +61,21 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
     }
   }
 
+  const scrollToBottom = () => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
+
+    }
+  }
+
   useEffect(() => {
     fetchMessages()
   }, [selectedChat])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   return (
     <div>
       {selectedChat ? (
@@ -71,7 +84,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
           {selectedChat.isGroupChat ? selectedChat.name : (
             <div >
 
-              <div className='bg-light border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px'}}>
+              <div className='bg-light border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px' }}>
                 <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
                 <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />
@@ -79,7 +92,7 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
                   {getOtherUser(user, selectedChat.users).name}
                 </h5>
               </div>
-              <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center': ''} p-3`}  style={{ height: '77vh'}}>
+              <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center' : ''} p-3`} style={{ height: '77vh' }}>
                 {loading ? (
                   <div className="text-center">
                     <div className="spinner-border" role="status">
@@ -114,22 +127,24 @@ const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {
                     </div>
                   ))
                 )}
+                <div ref={chatEndRef} />
               </div>
             </div>
 
 
           )}
-          <div className='p-2 border-top' style={{ height: '8vh'}}>
+          <div className='py-2 px-3 border-top' style={{ height: '8vh', minHeight: '58px' }}>
             <div className='input-group'>
               <input type="text"
-              className='form-control'
-              placeholder='Type a message' 
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}/>
+                className='form-control'
+                placeholder='Type a message'
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && sendMessage()} />
               <button className='btn btn-primary'
-              onClick={() => sendMessage()}
-              disabled={!newMessage.trim()}>
-            
+                onClick={() => sendMessage()}
+                disabled={!newMessage.trim()}>
+
                 send
               </button>
             </div>

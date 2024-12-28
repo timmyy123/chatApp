@@ -5,11 +5,11 @@ import { ChatState } from "./Context/ChatProvider";
 const TopBar = () => {
   const { user } = ChatState();
   return (
-    <div className="row navbar p-1" style={{ backgroundColor: "#edbee8", height: '8vh', minHeight: '50px'}}>
+    <div className="row navbar p-1 bg-primary bg-gradient" style={{  height: '8vh', minHeight: '50px'}}>
       <div className="col-3">
         <button 
         type="button"
-        className="btn btn-danger mx-2"
+        className="btn btn-outline-warning mx-2"
           data-bs-toggle="offcanvas"
           data-bs-target="#searchUserOffcanvas"
           aria-controls="searchUserOffcanvas"

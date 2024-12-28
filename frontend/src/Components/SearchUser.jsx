@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ChatState } from './Context/ChatProvider'
 import UserListItem from './UserListItem'
 import UseApi from '../hooks/UseApi'
 
 const SearchUser = () => {
-  const [search, setSearch] = React.useState('')
-  const [searchResults, setSearchResults] = React.useState([])
-  const [loading, setLoading] = React.useState(false)
+  const [search, setSearch] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [loading, setLoading] = useState(false)
   const api = UseApi()
 
   const { user, chats, setChats, setSelectedChat, createToast } = ChatState()
