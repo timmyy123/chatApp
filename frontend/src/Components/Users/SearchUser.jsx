@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { ChatState } from './Context/ChatProvider'
+import { ChatState } from '../Context/ChatProvider'
 import UserListItem from './UserListItem'
-import UseApi from '../hooks/UseApi'
+import UseApi from '../../hooks/UseApi'
 
 const SearchUser = () => {
   const [search, setSearch] = useState('')
@@ -101,7 +101,7 @@ const SearchUser = () => {
           <div className='list-group'>
             {searchResults.length > 0 ? (
               searchResults.map(user => (
-                <UserListItem key={user._id} user={user} handleFunction={() => selectUser(user._id)}></UserListItem>
+                <UserListItem key={user._id} user={user} handleFunction={() => selectUser(user._id)} forSideBar={true}></UserListItem>
               ))
             ) : (
               <div>No users found</div>

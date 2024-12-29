@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import ChatsMenu from "../Components/ChatsMenu";
-import SearchUser from "../Components/SearchUser";
+import ChatsMenu from "../Components/Chats/ChatsMenu";
+import SearchUser from "../Components/Users/SearchUser";
 import TopBar from "../Components/TopBar";
 import { ChatState } from "../Components/Context/ChatProvider";
-import ChatWindow from "../Components/ChatWindow";
+import ChatWindow from "../Components/Chats/ChatWindow";
 import GroupChatModal from "../Components/GroupChat/GroupChatModal";
 
 const ChatPage = () => {

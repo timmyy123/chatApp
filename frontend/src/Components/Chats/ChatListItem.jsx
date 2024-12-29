@@ -1,13 +1,13 @@
 import React from 'react'
-import UserAvatar from './UserAvatar'
-import { ChatState } from './Context/ChatProvider'
-import { getOtherUser } from './config/ChatLogics'
+import UserAvatar from '../Users/UserAvatar'
+import { ChatState } from '../Context/ChatProvider'
+import { getOtherUser } from '../config/ChatLogics'
 
 const ChatListItem = ({ user, chat }) => {
   const { selectedChat, setSelectedChat } = ChatState()
   return (
     <div
-      className={`d-flex align-items-center p-2 mb-2 rounded ${selectedChat === chat ? 'bg-info text-white' : 'bg-light'}`}
+      className={`d-flex align-items-center p-2 mb-2 rounded ${selectedChat && selectedChat._id === chat._id ? 'bg-info text-white' : 'bg-light'}`}
       style={{ cursor: 'pointer' }}
       onClick={() => setSelectedChat(chat)}>
 

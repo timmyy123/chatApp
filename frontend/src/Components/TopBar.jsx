@@ -1,5 +1,5 @@
 import React from "react";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "./Users/UserAvatar";
 import { ChatState } from "./Context/ChatProvider";
 
 const TopBar = () => {

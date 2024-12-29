@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ChatState } from './Context/ChatProvider'
+import { ChatState } from '../Context/ChatProvider'
 import { data } from 'react-router-dom'
-import { getOtherUser } from './config/ChatLogics'
-import UserAvatar from './UserAvatar'
-import UseApi from '../hooks/UseApi'
+import { getOtherUser } from '../config/ChatLogics'
+import UserAvatar from '../Users/UserAvatar'
+import UseApi from '../../hooks/UseApi'
 
 
 const ChatWindow = ({ fetchAgain, setFetchAgain, toggleMobileScreen }) => {

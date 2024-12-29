@@ -128,8 +128,8 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     res.status(404).send('Chat not found')
   }
 
-  if (chat.Admin.toString() !== req.user._id.toString()) {
-    res.status(403).send("You don't have authority to remove a user")
+  if ((req.user._id.toString() === userId.toString()) == (chat.Admin.toString() === req.user._id.toString())) {
+    res.status(403).send("Admin can't leave the group, non-admins can't remove others")
   }
 
   await Chat.findByIdAndUpdate(

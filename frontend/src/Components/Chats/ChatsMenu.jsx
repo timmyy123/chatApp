@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { ChatState } from './Context/ChatProvider'
+import { ChatState } from '../Context/ChatProvider'
 import ChatListItem from './ChatListItem'
-import UseApi from '../hooks/UseApi'
+import UseApi from '../../hooks/UseApi'
 
 const ChatsMenu = ({ fetchAgain }) => {
   const [loading, setLoading] = useState(false)

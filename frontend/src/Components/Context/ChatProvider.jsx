@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
-  const [selectedChat, setSelectedChat] = useState(JSON.parse(localStorage.getItem('selectedChat'))||undefined);
+  const [selectedChat, setSelectedChat] = useState(JSON.parse(sessionStorage.getItem('selectedChat'))||undefined);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo'))||undefined);
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState();
@@ -28,16 +28,16 @@ const ChatProvider = ({ children }) => {
   
     // Clear user data from localStorage
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('selectedChat');
+    sessionStorage.removeItem('selectedChat');
   
     // Redirect to login page
   };
   
   useEffect(() => {
     if (selectedChat) {
-      localStorage.setItem('selectedChat', JSON.stringify(selectedChat))
+      sessionStorage.setItem('selectedChat', JSON.stringify(selectedChat))
     } else {
-      localStorage.removeItem('selectedChat')
+      sessionStorage.removeItem('selectedChat')
     }
   }, [selectedChat])
 
