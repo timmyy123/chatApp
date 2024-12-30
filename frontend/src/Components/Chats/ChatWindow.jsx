@@ -92,7 +92,6 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
                   {selectedChat.chatName}
                 </h5>
                 </>
-
               ):(
                 <>
               <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />

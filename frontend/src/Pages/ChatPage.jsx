@@ -16,8 +16,8 @@ const ChatPage = () => {
     <main className="w-100 container-fluid vh-100 d-flex flex-column justify-content-center ">
       <TopBar />
       {/* Always render SearchUser */}
-      {user && <SearchUser />}
-      <GroupChatModal setToggleFetch={setFetchAgain}></GroupChatModal>
+      {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}/>}
+      <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>
       {user && (
         <div className="row no-gutters">
           <div className={`col-12 col-xl-3 p-0 ${selectedChat ? 'd-none d-xl-block' : ''}`}>

@@ -4,8 +4,8 @@ import GroupChatAvatar from '../GroupChat/GroupChatAvatar'
 import { ChatState } from '../Context/ChatProvider'
 import { getOtherUser } from '../config/ChatLogics'
 
-const ChatListItem = ({ user, chat }) => {
-  const { selectedChat, setSelectedChat } = ChatState()
+const ChatListItem = ({ chat }) => {
+  const { selectedChat, setSelectedChat, user } = ChatState()
 
   // Check if the other user exists
   const otherUser = getOtherUser(user, chat.users);

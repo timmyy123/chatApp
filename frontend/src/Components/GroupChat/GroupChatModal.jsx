@@ -3,33 +3,16 @@ import { ChatState } from '../Context/ChatProvider'
 import UseApi from '../../hooks/UseApi'
 import UserListItem from '../Users/UserListItem'
 import UserBadgeItem from '../Users/UserBadgeItem'
+import useSearchUser from '../../hooks/useSearchUser'
 
-const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
-  const [search, setSearch] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [loading, setLoading] = useState(false)
+const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
   const [selectedUsers, setSelectedUsers] = useState([])
   const [groupName, setGroupName] = useState('')
 
+
+  const {search, setSearch, searchResults, loading, handleHide} = useSearchUser('/api/user')
   const api = UseApi()
   const { user, createToast, setSelectedChat } = ChatState()
-  const handleSearch = async () => {
-    if (!search.trim()) return
-
-    try {
-      setLoading(true)
-      const config = {
-        headers: { Authorization: `Bearer ${user.token}` }
-      }
-      const { data } = await api.get(`/api/user?search=${search}`, config)
-      setSearchResults(data)
-      setLoading(false)
-    } catch (error) {
-      console.error(error.response.data)
-      setLoading(false)
-
-    }
-  }
 
   const addUser = (user) => {
     if (!selectedUsers.some(u => u._id === user._id)) {
@@ -45,11 +28,11 @@ const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
   const CreateGroupChat = async () => {
     console.log('ran')
     let error = []
-    if(! groupName) {
+    if (!groupName) {
       error = [...error, 'Please enter group name']
     }
 
-    if(selectedUsers.length<3){
+    if (selectedUsers.length < 3) {
       error = [...error, 'Group needs at least 3 users']
     }
     console.log(1)
@@ -68,10 +51,10 @@ const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
       console.log('tried')
 
       const config = {
-        headers: {Authorization: `Bearer ${user.token}`}
+        headers: { Authorization: `Bearer ${user.token}` }
       }
-  
-      const {data} = await api.post(`/api/chat/group`,
+
+      const { data } = await api.post(`/api/chat/group`,
         {
           name: groupName,
           users: JSON.stringify(selectedUsers.map(u => u._id)),
@@ -83,23 +66,36 @@ const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
       setToggleFetch(!toggleFetch)
       setSelectedChat(data)
       createToast('New group chat created', 'success')
-    } catch(error) {
+    } catch (error) {
       console.log(error.response.data)
       createToast('Failed to create group chat')
-
     }
-    
+  }
+
+  const clearSelectedUsers = () => setSelectedUsers([user])
 
 
+  const handleModalHide = () => {
+    clearSelectedUsers()
+    handleHide()
   }
 
   useEffect(() => {
-    if (search.trim()) {
-      handleSearch()
-    } else {
-      setSearchResults([])
+    const modalElement = document.getElementById('groupChatModal')
+
+    modalElement.addEventListener(
+      'hidden.bs.modal',
+      handleModalHide
+    )
+
+    return () => {
+      modalElement.removeEventListener(
+        'hidden.bs.modal',
+        handleModalHide
+      )
     }
-  }, [search])
+  })
+
 
   useEffect(() => {
     setSelectedUsers([user])
@@ -152,7 +148,7 @@ const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
             }
           </div>
           <div className='modal-footer'>
-            <button type='button' className='btn btn-secondary' onClick={() => setSelectedUsers([user])}>Clear</button>
+            <button type='button' className='btn btn-secondary' onClick={() => clearSelectedUsers()}>Clear</button>
             <button type='button' className='btn btn-primary' onClick={() => CreateGroupChat()}>Create Group Chat</button>
           </div>
         </div>

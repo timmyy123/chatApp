@@ -58,7 +58,7 @@ const ChatsMenu = ({ toggleFetch }) => {
           </div>
         ) : chats && chats.length > 0 ? (
           <div>
-            {chats.map((chat) => <ChatListItem key={chat._id} user={user} chat={chat} />)}
+            {chats.map((chat) => <ChatListItem key={chat._id} chat={chat} />)}
           </div>
         ) : (
           <div className="text-center text-muted">No chats available</div>

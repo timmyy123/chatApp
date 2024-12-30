@@ -1,33 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
 import UserListItem from './UserListItem'
+import useSearchUser from '../../hooks/useSearchUser'
 import UseApi from '../../hooks/UseApi'
 
-const SearchUser = () => {
-  const [search, setSearch] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [loading, setLoading] = useState(false)
+const SearchUser = ({toggleFetch, setToggleFetch}) => {
+  const {search, setSearch, searchResults, loading, handleHide} = useSearchUser('/api/user')
+  const { user, chats, setSelectedChat, createToast } = ChatState()
   const api = UseApi()
-
-  const { user, chats, setChats, setSelectedChat, createToast } = ChatState()
-
-  const handleSearch = async () => {
-    if (!search.trim()) return
-
-    try {
-      setLoading(true)
-      const config = {
-        headers: { Authorization: `Bearer ${user.token}` }
-      }
-      const { data } = await api.get(`/api/user?search=${search}`, config)
-      setSearchResults(data)
-      setLoading(false)
-    } catch (error) {
-      console.error(error.response.data)
-      setLoading(false)
-
-    }
-  }
 
   const selectUser = async (userId) => {
     try {
@@ -38,39 +18,27 @@ const SearchUser = () => {
         }
       }
       const {data} = await api.post('/api/chat', {userId}, config)
-      if(!chats.find((chat) => chat._id === data._id)) setChats([...chats, data])
+      if(!chats.find((chat) => chat._id === data._id)) setToggleFetch(!toggleFetch)
       setSelectedChat(data)
     } catch (error) {
       createToast('Failed to select user')
-      console.log(error.response.data)
+      console.log(error.message)
     }
   }
 
-  useEffect(() => {
-    if (search.trim()) {
-      handleSearch()
-    } else {
-      setSearchResults([])
-    }
-  }, [search])
-
-  const handleOffcanvasHide = () => {
-    setSearch('')
-    setSearchResults([])
-  }
   useEffect(() => {
     const offcanvasElement = document.getElementById('searchUserOffcanvas')
     
 
     offcanvasElement.addEventListener(
       'hidden.bs.offcanvas',
-      handleOffcanvasHide
+      handleHide
     )
 
     return () => {
       offcanvasElement.removeEventListener(
         'hidden.bs.offcanvas',
-        handleOffcanvasHide
+        handleHide
       )
     }
   })
