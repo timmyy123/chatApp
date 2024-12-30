@@ -4,7 +4,7 @@ import UseApi from '../../hooks/UseApi'
 import UserListItem from '../Users/UserListItem'
 import UserBadgeItem from '../Users/UserBadgeItem'
 
-const GroupChatModal = () => {
+const GroupChatModal = ({toggleFetch, setToggleFetch}) => {
   const [search, setSearch] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [loading, setLoading] = useState(false)
@@ -12,7 +12,7 @@ const GroupChatModal = () => {
   const [groupName, setGroupName] = useState('')
 
   const api = UseApi()
-  const { user } = ChatState()
+  const { user, createToast, setSelectedChat } = ChatState()
   const handleSearch = async () => {
     if (!search.trim()) return
 
@@ -25,7 +25,7 @@ const GroupChatModal = () => {
       setSearchResults(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.message)
+      console.error(error.response.data)
       setLoading(false)
 
     }
@@ -37,8 +37,60 @@ const GroupChatModal = () => {
     }
   }
 
-  const removeUser = (user) => {
-    setSelectedUsers(selectedUsers.filter(u => u !== user))
+  const removeUser = (userToRemove) => {
+    if (userToRemove._id === user._id) return
+    setSelectedUsers(selectedUsers.filter(u => u !== userToRemove))
+  }
+
+  const CreateGroupChat = async () => {
+    console.log('ran')
+    let error = []
+    if(! groupName) {
+      error = [...error, 'Please enter group name']
+    }
+
+    if(selectedUsers.length<3){
+      error = [...error, 'Group needs at least 3 users']
+    }
+    console.log(1)
+    if (error.lengh > 0) {
+      error.forEach((e, index) => {
+        setTimeout(() => {
+          createToast(e); // Create each toast with a delay
+        }, index * 100); // Delay each toast by 1000ms (1 second) per index
+      });
+      return;
+    }
+
+    console.log(2)
+
+    try {
+      console.log('tried')
+
+      const config = {
+        headers: {Authorization: `Bearer ${user.token}`}
+      }
+  
+      const {data} = await api.post(`/api/chat/group`,
+        {
+          name: groupName,
+          users: JSON.stringify(selectedUsers.map(u => u._id)),
+        },
+        config
+
+      )
+
+      setToggleFetch(!toggleFetch)
+      setSelectedChat(data)
+      createToast('New group chat created', 'success')
+    } catch(error) {
+      console.log(error.response.data)
+      createToast('Failed to create group chat')
+
+    }
+    
+
+
   }
 
   useEffect(() => {
@@ -48,6 +100,10 @@ const GroupChatModal = () => {
       setSearchResults([])
     }
   }, [search])
+
+  useEffect(() => {
+    setSelectedUsers([user])
+  }, [])
   return (
     <div className='modal' id='groupChatModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='staticBackdropLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
@@ -75,7 +131,7 @@ const GroupChatModal = () => {
             </div>
             {selectedUsers && (
               <div className='d-flex flex-wrap'>
-                {selectedUsers.map(u => <UserBadgeItem key={u._id} user={u} handleClick={() => removeUser(u)}></UserBadgeItem>)}
+                {selectedUsers.map(u => <UserBadgeItem key={u._id} userInfo={u} handleClick={() => removeUser(u)}></UserBadgeItem>)}
               </div>
             )}
             {loading ? (
@@ -94,9 +150,11 @@ const GroupChatModal = () => {
               </div>
             )
             }
-
           </div>
-          <div className='modal-footer'></div>
+          <div className='modal-footer'>
+            <button type='button' className='btn btn-secondary' onClick={() => setSelectedUsers([user])}>Clear</button>
+            <button type='button' className='btn btn-primary' onClick={() => CreateGroupChat()}>Create Group Chat</button>
+          </div>
         </div>
       </div>
     </div>

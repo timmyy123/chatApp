@@ -23,7 +23,7 @@ const SearchUser = () => {
       setSearchResults(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.message)
+      console.error(error.response.data)
       setLoading(false)
 
     }
@@ -42,7 +42,7 @@ const SearchUser = () => {
       setSelectedChat(data)
     } catch (error) {
       createToast('Failed to select user')
-      console.log(error.message)
+      console.log(error.response.data)
     }
   }
 

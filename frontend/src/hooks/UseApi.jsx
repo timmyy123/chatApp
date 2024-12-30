@@ -13,7 +13,7 @@ const UseApi = () => {
         error.response.data === 'Not authorized, no token')
         && error.response.status === 401) {
       logout()
-      createToast(`${error.message}, please login again`)
+      createToast(`${error.response.data}, please login again`)
       }
       return Promise.reject(error)
     }

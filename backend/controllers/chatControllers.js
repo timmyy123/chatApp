@@ -67,6 +67,7 @@ const fetchChats = asyncHandler(async (req, res) => {
 })
 
 const createGroupChat = asyncHandler(async (req, res) => {
+  console.log(req.body)
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({ message: 'Please enter all the fields' })
   }
@@ -74,11 +75,10 @@ const createGroupChat = asyncHandler(async (req, res) => {
   let users = JSON.parse(req.body.users)
 
   
-  if (users.length < 2) {
+  if (users.length < 3) {
     return res.status(400).send('Group chats require at least 3 users')
   }
   
-  users.push(req.user)
   try {
     const groupChat = await Chat.create({
       chatName: req.body.name,

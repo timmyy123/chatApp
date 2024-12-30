@@ -3,7 +3,7 @@ import { ChatState } from '../Context/ChatProvider'
 import ChatListItem from './ChatListItem'
 import UseApi from '../../hooks/UseApi'
 
-const ChatsMenu = ({ fetchAgain }) => {
+const ChatsMenu = ({ toggleFetch }) => {
   const [loading, setLoading] = useState(false)
   const { user, chats, setChats } = ChatState()
   const api = UseApi()
@@ -21,7 +21,7 @@ const ChatsMenu = ({ fetchAgain }) => {
       setChats(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.message)
+      console.error(error.response.data)
       // setError(error.message)
       setLoading(false)
     }
@@ -29,7 +29,7 @@ const ChatsMenu = ({ fetchAgain }) => {
 
   useEffect(() => {
     fetchChats()
-  }, [fetchAgain])
+  }, [toggleFetch])
   return (
     <div
       className={`d-flex flex-column bg-warning  w-100 p-2`}

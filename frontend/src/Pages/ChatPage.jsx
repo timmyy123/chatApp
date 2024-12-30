@@ -17,14 +17,14 @@ const ChatPage = () => {
       <TopBar />
       {/* Always render SearchUser */}
       {user && <SearchUser />}
-      <GroupChatModal></GroupChatModal>
+      <GroupChatModal setToggleFetch={setFetchAgain}></GroupChatModal>
       {user && (
         <div className="row no-gutters">
           <div className={`col-12 col-xl-3 p-0 ${selectedChat ? 'd-none d-xl-block' : ''}`}>
-            <ChatsMenu fetchAgain={fetchAgain}></ChatsMenu>
+            <ChatsMenu toggleFetch={fetchAgain}></ChatsMenu>
           </div>
           <div className={`col-12 col-xl-9 p-0 ${selectedChat ? '' : 'd-none d-xl-block'}`}>
-            <ChatWindow fetchAgain={fetchAgain} setFetchAgain={setFetchAgain}></ChatWindow>
+            <ChatWindow toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ChatWindow>
           </div>
         </div>
       )}
