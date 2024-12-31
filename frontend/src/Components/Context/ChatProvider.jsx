@@ -16,7 +16,6 @@ const ChatProvider = ({ children }) => {
   //   setUser(userInfo);
   //   if (!userInfo) navigate('/');
   // }, [navigate]);
-  console.log('context')
 
   const logout = () => {
     // Clear user data from state and localStorage

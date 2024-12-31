@@ -32,15 +32,16 @@ const ChatsMenu = ({ toggleFetch }) => {
   }, [toggleFetch])
   return (
     <div
-      className={`d-flex flex-column bg-warning  w-100 p-2`}
+      className={`d-flex flex-column bg-warning  w-100`}
       style={{ height: '92vh' }}
     >
       <div
-        className='d-flex w-100 align-items-center mb-3 p-2'
+        className='d-flex w-100 align-items-center p-2'
+        style={{ height: '8vh', minHeight: '50px' }}
         
       >
-        <span className='fw-bold fs-3 flex-grow-1' style={{ fontFamily: "Work Sans" }}>My Chats</span>
-        <button type='button' className='btn btn-primary d-flex' data-bs-toggle='modal' data-bs-target ='#groupChatModal' style={{minWidth: '180px'}}>
+        <span className='fw-bold fs-3 flex-grow-1 ms-2' style={{ fontFamily: "Work Sans" }}>My Chats</span>
+        <button type='button' className='btn btn-primary d-flex me-4' data-bs-toggle='modal' data-bs-target ='#groupChatModal' style={{minWidth: '180px'}}>
           <p className='fs-6 flex-grow-1 my-0 me-1'>
 
           Create Group Chat
@@ -57,7 +58,7 @@ const ChatsMenu = ({ toggleFetch }) => {
             </div>
           </div>
         ) : chats && chats.length > 0 ? (
-          <div>
+          <div className='d-flex flex-column overflow-auto p-3' style={{height: '84vh'}}>
             {chats.map((chat) => <ChatListItem key={chat._id} chat={chat} />)}
           </div>
         ) : (

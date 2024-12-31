@@ -16,8 +16,6 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
-  console.log(selectedChat)
-
   const fetchMessages = async () => {
     if (!selectedChat) return
 
@@ -64,6 +62,34 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
     }
   }
 
+  const leaveGroup = async () => {
+    setLoading(true)
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+      const { data } = await api.put(
+        `/api/chat/groupremove`,
+        {
+          chatId: selectedChat._id,
+          userId: user._id
+        },
+        config
+      );
+      setSelectedChat(null)
+      createToast(`You left the group ${selectedChat.chatName}`, 'success')
+      setToggleFetch(!toggleFetch)
+      setLoading(false)
+
+    } catch (error) {
+      createToast('Failed to leave group')
+      console.error(error.message)
+      setLoading(false)
+    }
+  }
+
   const scrollToBottom = () => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -106,7 +132,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
               {selectedChat.isGroupChat && (selectedChat.Admin._id === user._id?  (
                 <button type='button' className='btn btn-warning ms-auto me-2' data-bs-toggle='modal' data-bs-target='#ManageGroupModal'>Manage</button>
               ):(
-                <button className='btn btn-danger ms-auto me-2'>Leave</button>
+                <button className='btn btn-danger ms-auto me-2' onClick={() => leaveGroup()}>Leave</button>
               ))}
             </div>
             <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center' : ''} p-3`} style={{ height: '77vh' }}>

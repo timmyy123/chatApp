@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import useSearchUser from '../../hooks/useSearchUser'
-import UseApi from '../../hooks/UseApi'
-import UserListItem from '../Users/UserListItem'
-import UserBadgeItem from '../Users/UserBadgeItem'
-import { ChatState } from '../Context/ChatProvider'
+import React, { useEffect, useState } from 'react';
+import useSearchUser from '../../hooks/useSearchUser';
+import UseApi from '../../hooks/UseApi';
+import { ChatState } from '../Context/ChatProvider';
+import GroupChatModalContent from './GroupChatModalContent';
 
 const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
-  const [existingUsers, setExistingUsers] = useState([])
-  const [updateGroupName, setUpdateGroupName] = useState('')
+  const [existingUsers, setExistingUsers] = useState([]);
+  const [updateGroupName, setUpdateGroupName] = useState('');
 
-  const { search, setSearch, searchResults, loading, setLoading, handleHide } = useSearchUser('/api/user')
-  const { user, selectedChat, setSelectedChat, createToast } = ChatState()
-  const api = UseApi()
+  const { search, setSearch, searchResults, loading, setLoading, handleHide } = useSearchUser('/api/user');
+  const { user, selectedChat, setSelectedChat, createToast } = ChatState();
+  const api = UseApi();
 
   const addUser = async (userToAdd) => {
     if (existingUsers.some(u => u._id === userToAdd._id)) {
-      return createToast('User already exist')
+      return createToast('User already exist');
     }
     try {
-      setLoading(true)
+      setLoading(true);
       const config = {
         headers: { Authorization: `Bearer ${user.token}` }
-      }
+      };
       const { data } = await api.put(
         `/api/chat/groupadd`,
         {
@@ -29,33 +28,34 @@ const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
           userId: userToAdd._id
         },
         config
-      )
-      setSelectedChat(data)
-      setToggleFetch(!toggleFetch)
-      setLoading(false)
+      );
+      setSelectedChat(data);
+      setToggleFetch(!toggleFetch);
+      setLoading(false);
     } catch (error) {
-      createToast('Failed to add user')
-      console.log(error.message)
+      createToast('Failed to add user');
+      console.log(error.message);
+      setLoading(false);
     }
-  }
+  };
 
   const removeUser = async (userToRemove) => {
     if (existingUsers.length < 4) {
-      return createToast("Group needs at least 3 users, can't remove more user")
+      return createToast("Group needs at least 3 users, can't remove more user");
     }
 
     if (userToRemove._id === user._id) {
-      return createToast("Admin can't be removed")
+      return createToast("You are admin, can't remove yourself");
     }
 
     if (!existingUsers.some(u => u._id === userToRemove._id)) {
-      return createToast("User doesn't exist in group")
+      return createToast("User doesn't exist in group");
     }
     try {
-      setLoading(true)
+      setLoading(true);
       const config = {
         headers: { Authorization: `Bearer ${user.token}` }
-      }
+      };
       const { data } = await api.put(
         `/api/chat/groupremove`,
         {
@@ -63,27 +63,28 @@ const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
           userId: userToRemove._id
         },
         config
-      )
-      setSelectedChat(data)
-      setToggleFetch(!toggleFetch)
-      setLoading(false)
+      );
+      setSelectedChat(data);
+      setToggleFetch(!toggleFetch);
+      setLoading(false);
     } catch (error) {
-      createToast('Failed to remove user')
-      console.log(error.message)
+      createToast('Failed to remove user');
+      console.log(error.message);
+      setLoading(false);
     }
-  }
+  };
 
   const renameGroup = async () => {
-    if (!updateGroupName) return
+    if (!updateGroupName) return;
 
     if (updateGroupName === selectedChat.chatName) {
-      return createToast('Choose a different name')
+      return createToast('Choose a different name');
     }
 
     try {
       const config = {
         headers: { Authorization: `Bearer ${user.token}` }
-      }
+      };
 
       const { data } = await api.put(
         `/api/chat/rename`,
@@ -92,74 +93,65 @@ const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
           chatName: updateGroupName
         },
         config
-      )
+      );
 
-      setSelectedChat(data)
-      setToggleFetch(!toggleFetch)
+      setSelectedChat(data);
+      setUpdateGroupName('')
+      setToggleFetch(!toggleFetch);
     } catch (error) {
-      createToast('Failed to rename group')
-      console.error(error.message)
+      createToast('Failed to rename group');
+      console.error(error.message);
     }
-  }
+  };
+
+  const handleReset = () => {
+    handleHide()
+    setUpdateGroupName('')
+  };
 
   useEffect(() => {
-    setExistingUsers(selectedChat.users)
-  }, [selectedChat])
+    const modalElement = document.getElementById('ManageGroupModal');
+
+
+    modalElement.addEventListener('hidden.bs.modal', handleReset);
+
+    return () => {
+      modalElement.removeEventListener('hidden.bs.modal', handleReset);
+    };
+  }, [handleHide, selectedChat, setUpdateGroupName, setExistingUsers]);
+
+  useEffect(() => {
+    setExistingUsers(selectedChat.users);
+  }, [selectedChat]);
 
   return (
     <div className='modal' id='ManageGroupModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='manageGroupLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h1 className='modal-title fs-5' id='groupChatLabel'>Manage Group Chat</h1>
+            <h1 className='modal-title fs-5' id='manageGroupLabel'>Manage Group Chat</h1>
             <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
           </div>
           <div className='modal-body'>
-            <div className=' mb-2 row'>
-              <div className='col-12 col-xl-6 mb-2 mb-xl-0'>
-                <input type="text"
-                  className='form-control'
-                  placeholder='Search for a user to add'
-                  value={search}
-                  onChange={e => setSearch(e.target.value)} />
-              </div>
-              <div className='col-12 col-xl-6'>
-                <input type="text"
-                  className='form-control'
-                  placeholder='Enter group name'
-                  value={updateGroupName}
-                  onChange={e => setUpdateGroupName(e.target.value)} />
-              </div>
-            </div>
-            {existingUsers && (
-              <div className='d-flex flex-wrap'>
-                {existingUsers.map(u => <UserBadgeItem key={u._id} userInfo={u} handleClick={() => removeUser(u)}></UserBadgeItem>)}
-              </div>
-            )}
-            {loading ? (
-              <div>
-                <i className='bi bi-arrow-clockwise spinner-icon'></i>
-              </div>
-            ) : (
-              <div className='list-group d-flex align-items-center'>
-                {searchResults.length > 0 ? (
-                  searchResults.map(user => {!existingUsers.some(u => u._id === user._id)&&(
-                    <UserListItem key={user._id} user={user} handleFunction={() => addUser(user)} forSideBar={false}></UserListItem>
-                  )})
-                ) : (
-                  <div>No users found</div>
-                )}
-              </div>
-            )
-            }
-          </div>
-          <div className='modal-footer'>
-            <button type='button' className='btn btn-primary' onClick={() => renameGroup()}>Update Group Name</button>
+            <GroupChatModalContent
+              search={search}
+              setSearch={setSearch}
+              searchResults={searchResults}
+              loading={loading}
+              selectedUsers={existingUsers}
+              removeUser={removeUser}
+              addUser={addUser}
+              groupName={updateGroupName}
+              setGroupName={setUpdateGroupName}
+              handleAction={renameGroup}
+              handleReset={handleReset}
+              submitActionLabel='Update Group Name'
+            />
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ManageGroupModal
+export default ManageGroupModal;
