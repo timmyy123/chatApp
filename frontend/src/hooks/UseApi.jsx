@@ -9,11 +9,11 @@ const UseApi = () => {
     (response) => response,
     (error) => {
       console.log('Interceptor error:', error.response)
-      if ((error.response.data === 'Invalid token or user' || 
-        error.response.data === 'Not authorized, no token')
+      if ((error.message === 'Invalid token or user' || 
+        error.message === 'Not authorized, no token')
         && error.response.status === 401) {
       logout()
-      createToast(`${error.response.data}, please login again`)
+      createToast(`${error.message}, please login again`)
       }
       return Promise.reject(error)
     }

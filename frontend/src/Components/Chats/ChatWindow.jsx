@@ -30,7 +30,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
       setMessages(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.response.data)
+      console.error(error.message)
       createToast('Failed to fetch messages')
       setLoading(false)
     }
@@ -57,7 +57,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
       setMessages([...messages, data])
       setNewMessage('')
     } catch (error) {
-      console.error(error.response.data)
+      console.error(error.message)
       createToast('Failed to send message')
     }
   }

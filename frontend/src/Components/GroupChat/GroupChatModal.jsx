@@ -67,7 +67,7 @@ const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
       setSelectedChat(data)
       createToast('New group chat created', 'success')
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error.message)
       createToast('Failed to create group chat')
     }
   }

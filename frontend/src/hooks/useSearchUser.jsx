@@ -21,7 +21,7 @@ const useSearchUser = (endpoint, initialSearch = '') => {
       setSearchResults(data);
       setLoading(false);
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error.message);
       setLoading(false);
     }
   };

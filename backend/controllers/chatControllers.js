@@ -69,16 +69,16 @@ const fetchChats = asyncHandler(async (req, res) => {
 const createGroupChat = asyncHandler(async (req, res) => {
   console.log(req.body)
   if (!req.body.users || !req.body.name) {
-    return res.status(400).send({ message: 'Please enter all the fields' })
+    return res.status(400).json({ message: 'Please enter all the fields' })
   }
 
   let users = JSON.parse(req.body.users)
 
-  
+
   if (users.length < 3) {
-    return res.status(400).send('Group chats require at least 3 users')
+    return res.status(400).json({ message: 'Group chats require at least 3 users' })
   }
-  
+
   try {
     const groupChat = await Chat.create({
       chatName: req.body.name,
@@ -113,7 +113,7 @@ const renameGroup = asyncHandler(async (req, res) => {
     .populate('Admin', '-password')
 
   if (!updatedChat) {
-    res.status(404).send('Chat not found')
+    res.status(404).json({ message: 'Chat not found' })
   } else {
     res.json(updatedChat)
   }
@@ -125,11 +125,11 @@ const removeFromGroup = asyncHandler(async (req, res) => {
   const chat = await Chat.findById(chatId)
 
   if (!chat) {
-    res.status(404).send('Chat not found')
+    res.status(404).json({ message: 'Chat not found' })
   }
 
   if ((req.user._id.toString() === userId.toString()) == (chat.Admin.toString() === req.user._id.toString())) {
-    res.status(403).send("Admin can't leave the group, non-admins can't remove others")
+    res.status(403).json({ message: "Admin can't leave the group, non-admins can't remove others" })
   }
 
   await Chat.findByIdAndUpdate(
@@ -146,7 +146,7 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     .then((removed) => {
       res.json(removed)
     }).catch((error) => {
-      res.status(500).send(error.message)
+      res.status(500).json({ error: error.message })
     })
 })
 
@@ -156,11 +156,11 @@ const addToGroup = asyncHandler(async (req, res) => {
   const chat = await Chat.findById(chatId)
 
   if (!chat) {
-    res.status(404).send('Chat not found')
+    res.status(404).json({ message: 'Chat not found' })
   }
 
   if (chat.Admin.toString() !== req.user._id.toString()) {
-    res.status(403).send("You don't have authority to add a user")
+    res.status(403).json({ message: "You don't have authority to add a user" })
   }
 
   await Chat.findByIdAndUpdate(
@@ -177,7 +177,7 @@ const addToGroup = asyncHandler(async (req, res) => {
     .then((added) => {
       res.json(added)
     }).catch((error) => {
-      res.status(500).send(error.message)
+      res.status(500).json({ error: error.message })
     })
 })
 

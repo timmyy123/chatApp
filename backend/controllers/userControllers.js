@@ -6,14 +6,12 @@ const registerUser = asyncHandler(async (req, res) => {
   const {name, email, password} = req.body
 
   if(!name || !email || !password) {
-    res.status(400)
-    throw new Error('Please fill all the fields')
+    res.status(400).json({error:'Please fill all the fields'})
   }
   const userExists = await User.findOne({email})
 
   if(userExists) {
-    res.status(400)
-    throw new Error("A user with this email already exists")
+    res.status(400).json({error:"A user with this email already exists"})
   }
 
   const user = await User.create({
@@ -30,8 +28,7 @@ const registerUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id)
     })
   } else {
-    res.status(400)
-    throw new Error('Failed to create user')
+    res.status(400).json({error:'Failed to create user'})
   }
 })
 
@@ -50,8 +47,7 @@ const authUser = asyncHandler(async(req, res) => {
       token: generateToken(user._id)
     })
   } else {
-    res.status(401);
-    throw new Error('Email or Password does not match')
+    res.status(401).json({error:'Email or Password does not match'})
   }
 })
 

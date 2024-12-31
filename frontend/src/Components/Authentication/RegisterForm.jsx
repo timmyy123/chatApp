@@ -38,7 +38,7 @@ const RegisterForm = () => {
           setLoading(false)
           navigate('/chats')
         } catch(error){
-          createToast(error.response.data.message)
+          createToast(error.message)
         }
       } else {
         createToast("Passwords don't match")

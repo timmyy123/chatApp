@@ -21,7 +21,7 @@ const ChatsMenu = ({ toggleFetch }) => {
       setChats(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.response.data)
+      console.error(error.message)
       // setError(error.message)
       setLoading(false)
     }
