@@ -84,7 +84,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
       chatName: req.body.name,
       users: users,
       isGroupChat: true,
-      groupAdmin: req.user
+      Admin: req.user
     })
 
     const filledGroupChat = await Chat.findOne({ _id: groupChat._id })
@@ -99,6 +99,16 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
 const renameGroup = asyncHandler(async (req, res) => {
   const { chatId, chatName } = req.body
+
+  const chat = await Chat.findById(chatId)
+
+  if (!chat) {
+    res.status(404).json({ message: 'Chat not found' })
+  }
+
+  if (chat.Admin.toString() !== req.user._id.toString()) {
+    res.status(403).json({ message: "You don't have rename the group" })
+  }
 
   const updatedChat = await Chat.findByIdAndUpdate(
     chatId,
@@ -120,16 +130,26 @@ const renameGroup = asyncHandler(async (req, res) => {
 })
 
 const removeFromGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body
+  const { chatId, userId } = req.body;
 
-  const chat = await Chat.findById(chatId)
+  const chat = await Chat.findById(chatId);
 
   if (!chat) {
-    res.status(404).json({ message: 'Chat not found' })
+    return res.status(404).json({ message: 'Chat not found' });
   }
 
+  if (chat.users.length < 4) {
+    return res.status(400).json({ message: "Can't remove more users, group needs at least 3 users" })
+  }
+
+  // Check if the user is in the group
+  if (!chat.users.includes(userId)) {
+    return res.status(400).json({ message: 'User not in the group' });
+  }
+
+  // Check if the user has the authority to remove a user
   if ((req.user._id.toString() === userId.toString()) == (chat.Admin.toString() === req.user._id.toString())) {
-    res.status(403).json({ message: "Admin can't leave the group, non-admins can't remove others" })
+    return res.status(403).json({ message: "Admin can't leave the group, non-admins can't remove others" });
   }
 
   await Chat.findByIdAndUpdate(
@@ -151,16 +171,22 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 })
 
 const addToGroup = asyncHandler(async (req, res) => {
-  const { chatId, userId } = req.body
+  const { chatId, userId } = req.body;
 
-  const chat = await Chat.findById(chatId)
+  const chat = await Chat.findById(chatId);
 
   if (!chat) {
-    res.status(404).json({ message: 'Chat not found' })
+    return res.status(404).json({ message: 'Chat not found' });
   }
 
-  if (chat.Admin.toString() !== req.user._id.toString()) {
-    res.status(403).json({ message: "You don't have authority to add a user" })
+  // Check if the user is already in the group
+  if (chat.users.includes(userId)) {
+    return res.status(400).json({ message: 'User already in the group' });
+  }
+
+  // Check if the user has the authority to add a user
+  if ((req.user._id.toString() === userId.toString()) == (chat.Admin.toString() === req.user._id.toString())) {
+    return res.status(403).json({ message: "Admin can't add themselves, non-admins can't add users" });
   }
 
   await Chat.findByIdAndUpdate(
@@ -174,12 +200,12 @@ const addToGroup = asyncHandler(async (req, res) => {
   )
     .populate('users', '-password')
     .populate('Admin', '-password')
-    .then((added) => {
-      res.json(added)
+    .then((updatedChat) => {
+      res.json(updatedChat);
     }).catch((error) => {
-      res.status(500).json({ error: error.message })
-    })
-})
+      res.status(500).json({ error: error.message });
+    });
+});
 
 module.exports = {
   accessChat,

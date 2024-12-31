@@ -5,6 +5,7 @@ import TopBar from "../Components/TopBar";
 import { ChatState } from "../Components/Context/ChatProvider";
 import ChatWindow from "../Components/Chats/ChatWindow";
 import GroupChatModal from "../Components/GroupChat/GroupChatModal";
+import ManageGroupModal from "../Components/GroupChat/ManageGroupModal";
 
 const ChatPage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
@@ -18,6 +19,7 @@ const ChatPage = () => {
       {/* Always render SearchUser */}
       {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}/>}
       <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>
+      <ManageGroupModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ManageGroupModal>
       {user && (
         <div className="row no-gutters">
           <div className={`col-12 col-xl-3 p-0 ${selectedChat ? 'd-none d-xl-block' : ''}`}>

@@ -35,14 +35,14 @@ const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
     if (selectedUsers.length < 3) {
       error = [...error, 'Group needs at least 3 users']
     }
-    console.log(1)
-    if (error.lengh > 0) {
+    
+    if (error.length > 0) {
       error.forEach((e, index) => {
         setTimeout(() => {
           createToast(e); // Create each toast with a delay
         }, index * 100); // Delay each toast by 1000ms (1 second) per index
-      });
-      return;
+      })
+      return
     }
 
     console.log(2)
@@ -101,11 +101,11 @@ const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
     setSelectedUsers([user])
   }, [])
   return (
-    <div className='modal' id='groupChatModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='staticBackdropLabel' aria-hidden='true'>
+    <div className='modal' id='groupChatModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='groupChatLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h1 className='modal-title fs-5' id='staticBackdropLabel'>Create Group Chat</h1>
+            <h1 className='modal-title fs-5' id='groupChatLabel'>Create Group Chat</h1>
             <button type='button' className='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
           </div>
           <div className='modal-body'>

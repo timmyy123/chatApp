@@ -44,6 +44,7 @@ const useSearchUser = (endpoint, initialSearch = '') => {
     setSearch,
     searchResults,
     loading,
+    setLoading,
     handleHide
   };
 };

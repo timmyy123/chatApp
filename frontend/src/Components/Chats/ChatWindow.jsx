@@ -16,6 +16,8 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
+  console.log(selectedChat)
+
   const fetchMessages = async () => {
     if (!selectedChat) return
 
@@ -85,22 +87,27 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
             <div className='bg-light border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px' }}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
-              {selectedChat.isGroupChat? (
+              {selectedChat.isGroupChat ? (
                 <>
-                <GroupChatAvatar chatInfo={selectedChat}></GroupChatAvatar>
-                <h5>
-                  {selectedChat.chatName}
-                </h5>
+                  <GroupChatAvatar chatInfo={selectedChat}></GroupChatAvatar>
+                  <h5>
+                    {selectedChat.chatName}
+                  </h5>
                 </>
-              ):(
+              ) : (
                 <>
-              <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />
-              <h5>
-                {getOtherUser(user, selectedChat.users).name}
-              </h5>
+                  <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />
+                  <h5>
+                    {getOtherUser(user, selectedChat.users).name}
+                  </h5>
                 </>
               )
               }
+              {selectedChat.isGroupChat && (selectedChat.Admin._id === user._id?  (
+                <button type='button' className='btn btn-warning ms-auto me-2' data-bs-toggle='modal' data-bs-target='#ManageGroupModal'>Manage</button>
+              ):(
+                <button className='btn btn-danger ms-auto me-2'>Leave</button>
+              ))}
             </div>
             <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center' : ''} p-3`} style={{ height: '77vh' }}>
               {loading ? (
