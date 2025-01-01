@@ -16,6 +16,8 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
+  console.log('rendered', loading)
+
   const fetchMessages = async () => {
     if (!selectedChat) return
 
@@ -79,7 +81,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
         config
       );
       setSelectedChat(null)
-      createToast(`You left the group ${selectedChat.chatName}`, 'success')
+      createToast(`You left the group ${data.chatName}`, 'success')
       setToggleFetch(!toggleFetch)
       setLoading(false)
 

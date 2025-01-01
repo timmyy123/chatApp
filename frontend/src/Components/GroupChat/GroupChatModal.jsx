@@ -84,7 +84,7 @@ const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
 
   return (
     <div
-      className='modal'
+      className='modal fade'
       id='groupChatModal'
       data-bs-backdrop='static'
       tabIndex={'-1'}

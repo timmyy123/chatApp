@@ -4,8 +4,8 @@ import UserListItem from './UserListItem'
 import useSearchUser from '../../hooks/useSearchUser'
 import UseApi from '../../hooks/UseApi'
 
-const SearchUser = ({toggleFetch, setToggleFetch}) => {
-  const {search, setSearch, searchResults, loading, handleHide} = useSearchUser('/api/user')
+const SearchUser = ({ toggleFetch, setToggleFetch }) => {
+  const { search, setSearch, searchResults, loading, handleHide } = useSearchUser('/api/user')
   const { user, chats, setSelectedChat, createToast } = ChatState()
   const api = UseApi()
 
@@ -17,8 +17,8 @@ const SearchUser = ({toggleFetch, setToggleFetch}) => {
           Authorization: `Bearer ${user.token}`
         }
       }
-      const {data} = await api.post('/api/chat', {userId}, config)
-      if(!chats.find((chat) => chat._id === data._id)) setToggleFetch(!toggleFetch)
+      const { data } = await api.post('/api/chat', { userId }, config)
+      setToggleFetch(!toggleFetch)
       setSelectedChat(data)
     } catch (error) {
       createToast('Failed to select user')
@@ -28,7 +28,7 @@ const SearchUser = ({toggleFetch, setToggleFetch}) => {
 
   useEffect(() => {
     const offcanvasElement = document.getElementById('searchUserOffcanvas')
-    
+
 
     offcanvasElement.addEventListener(
       'hidden.bs.offcanvas',

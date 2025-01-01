@@ -6,19 +6,21 @@ import { ChatState } from "../Components/Context/ChatProvider";
 import ChatWindow from "../Components/Chats/ChatWindow";
 import GroupChatModal from "../Components/GroupChat/GroupChatModal";
 import ManageGroupModal from "../Components/GroupChat/ManageGroupModal";
+import ProfileModal from "../Components/Users/ProfileModal";
 
 const ChatPage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
-  
 
-  const { user, selectedChat } = ChatState();
+
+  const { user, profileUser, selectedChat } = ChatState();
 
   return (
     <main className="w-100 container-fluid vh-100 d-flex flex-column justify-content-center ">
       <TopBar />
       {/* Always render SearchUser */}
-      {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}/>}
-      <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>
+      {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain} />}
+      {user && <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>}
+      {profileUser && <ProfileModal></ProfileModal>}
       {selectedChat && <ManageGroupModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ManageGroupModal>}
       {user && (
         <div className="row no-gutters">

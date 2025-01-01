@@ -125,7 +125,7 @@ const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
   }, [selectedChat]);
 
   return (
-    <div className='modal' id='ManageGroupModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='manageGroupLabel' aria-hidden='true'>
+    <div className='modal fade' id='ManageGroupModal' data-bs-backdrop='static' tabIndex={'-1'} aria-labelledby='manageGroupLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
         <div className='modal-content'>
           <div className='modal-header'>
