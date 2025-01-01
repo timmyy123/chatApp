@@ -23,6 +23,7 @@ const ChatProvider = ({ children }) => {
     setUser(undefined);
     navigate('/');
     setSelectedChat(undefined);
+    setProfileUser(undefined)
     setNotification([]);
     setChats([]);
   

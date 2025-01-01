@@ -10,7 +10,7 @@ const UserListItem = ({ user, handleFunction, forSideBar }) => {
       data-bs-dismiss={forSideBar ? 'offcanvas' : ''}
     >
       <div className='d-flex align-items-center'>
-        <UserAvatar userInfo={user} />
+        <UserAvatar userInfo={user}  clickAble={false}/>
         <div>
           <strong>{user.name}</strong>
           <br />

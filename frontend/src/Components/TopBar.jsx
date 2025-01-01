@@ -25,7 +25,7 @@ const TopBar = () => {
         <h3>TiTalk</h3>
       </div>
       <div className="col-3 d-flex align-items-center justify-content-end">
-        {user && <UserAvatar userInfo={user}/>}
+        {user && <UserAvatar userInfo={user} clickAble={true}/>}
       </div>
     </div>
   );

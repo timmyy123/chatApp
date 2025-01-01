@@ -20,7 +20,7 @@ const ChatPage = () => {
       {/* Always render SearchUser */}
       {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain} />}
       {user && <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>}
-      {profileUser && <ProfileModal></ProfileModal>}
+      {profileUser && <ProfileModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ProfileModal>}
       {selectedChat && <ManageGroupModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ManageGroupModal>}
       {user && (
         <div className="row no-gutters">

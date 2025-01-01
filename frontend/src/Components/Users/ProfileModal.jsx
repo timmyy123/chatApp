@@ -17,7 +17,7 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
           Authorization: `Bearer ${user.token}`
         }
       }
-      const { data } = await api.post('/api/chat', { userId }, config)
+      const { data } = await api.post('/api/chat', { userId: profileUser._id }, config)
       setToggleFetch(!toggleFetch)
       setSelectedChat(data)
     } catch (error) {
@@ -29,18 +29,29 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
     <div className='modal fade' id='profileModal' data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={'-1'} aria-labelledby='profileModalLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
         <div className='modal-content'>
-          <div className='modal-header'>
-            <h1 className='modal-title fs-5' id='profileModalLabel'>User Profile</h1>
+          <div className='modal-header justify-content-center'>
+            <h1 className='modal-title fs-5' id='profileModalLabel'>{profileUser._id === user._id ? 'My Profile' : 'User Info'}</h1>
           </div>
-          <div className='modal-body'>
-            <UserAvatar userInfo={profileUser}></UserAvatar>
-            <h3>{profileUser.name}</h3>
-            <h3>{profileUser.email}</h3>
-
+          <div className='modal-body row d-flex justify-content-center'>
+            <div className='col-12 d-flex justify-content-center mb-2'>
+              <UserAvatar userInfo={profileUser} clickAble={false} scale={2}></UserAvatar>
+            </div>
+            <div className='col-12 d-flex justify-content-center'>
+              <div className='col-2' id='usernamePlaceholderStart'></div>
+              <h2 className='col-5 text-start fs-5'>Username:</h2>
+              <h2 className='col-2  p-0 text-start fs-5'>{profileUser.name}</h2>
+              <div className='col-3' id='usernamePlaceholderEnd'></div>
+            </div>
+            <div className='col-12 d-flex justify-content-center'>
+            <div className='col-2' id='usernamePlaceholderStart'></div>
+              <h2 className='col-5 text-start fs-5'>Email:</h2>
+              <h2 className='col-2  p-0 text-start fs-5'>{profileUser.email}</h2>
+              <div className='col-3' id='usernamePlaceholderEnd'></div>
+            </div>
           </div>
           <div className='modal-footer'>
-            <button type='button' className='btn btn-secondary' data-bs-dismiss = 'modal'>Dismiss</button>
-            <button type='button' className='btn btn-primary' onClick={forLoggedInUser? () => logout(): () => selectUser()}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button>
+            <button type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Dismiss</button>
+            <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => logout() : () => selectUser()}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button>
           </div>
         </div>
       </div>
@@ -50,3 +61,4 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
 }
 
 export default ProfileModal
+

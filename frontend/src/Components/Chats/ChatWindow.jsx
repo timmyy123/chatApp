@@ -16,8 +16,6 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
 
-  console.log('rendered', loading)
-
   const fetchMessages = async () => {
     if (!selectedChat) return
 
@@ -151,7 +149,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
                     {msg.sender._id !== user._id ?
                       (
                         <>
-                          <UserAvatar userInfo={msg.sender}></UserAvatar>
+                          <UserAvatar userInfo={msg.sender} clickAble={selectedChat.isGroupChat}></UserAvatar>
                           <div className='card px-2  bg-light text-dark justify-content-center'>
 
                             {msg.content}
@@ -163,7 +161,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
                             {msg.content}
                           </div>
-                          <UserAvatar userInfo={msg.sender}></UserAvatar>
+                          <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
                         </>
 
                       )
