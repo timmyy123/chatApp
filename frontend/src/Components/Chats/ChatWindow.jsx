@@ -115,7 +115,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
               {selectedChat.isGroupChat ? (
                 <>
-                  <GroupChatAvatar chatInfo={selectedChat}></GroupChatAvatar>
+                  <GroupChatAvatar chatInfo={selectedChat} clickAble='true'></GroupChatAvatar>
                   <h5>
                     {selectedChat.chatName}
                   </h5>
