@@ -9,6 +9,7 @@ const ChatsMenu = ({ toggleFetch }) => {
   const api = UseApi()
 
   const fetchChats = async () => {
+    console.log('fetch')
     try {
       setLoading(true)
       const config = {

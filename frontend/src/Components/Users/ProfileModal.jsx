@@ -8,9 +8,11 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
   const api = UseApi()
 
   const forLoggedInUser = profileUser._id === user._id
+  console.log('modal rendered')
 
-  const selectUser = async (userId) => {
+  const selectUser = async () => {
     try {
+      console.log(profileUser)
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
     }
   }
   return (
-    <div className='modal fade' id='profileModal' data-bs-backdrop="static" data-bs-keyboard="false" tabIndex={'-1'} aria-labelledby='profileModalLabel' aria-hidden='true'>
+    <div className='modal fade' id='profileModal' data-bs-backdrop="static"  tabIndex={'-1'} aria-labelledby='profileModalLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
         <div className='modal-content'>
           <div className='modal-header justify-content-center'>
@@ -43,7 +45,7 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
               <div className='col-3' id='usernamePlaceholderEnd'></div>
             </div>
             <div className='col-12 d-flex justify-content-center'>
-            <div className='col-2' id='usernamePlaceholderStart'></div>
+              <div className='col-2' id='usernamePlaceholderStart'></div>
               <h2 className='col-5 text-start fs-5'>Email:</h2>
               <h2 className='col-2  p-0 text-start fs-5'>{profileUser.email}</h2>
               <div className='col-3' id='usernamePlaceholderEnd'></div>
@@ -51,7 +53,13 @@ const ProfileModal = ({ toggleFetch, setToggleFetch }) => {
           </div>
           <div className='modal-footer'>
             <button type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Dismiss</button>
-            <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => logout() : () => selectUser()}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button>
+            <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => {
+              console.log('logout')
+              logout()
+            } : () => {
+              console.log('selectuser')
+              selectUser()
+            }}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button>
           </div>
         </div>
       </div>
