@@ -4,7 +4,10 @@ import UserAvatar from './UserAvatar'
 import UseSelectUser from '../../hooks/UseSelectUser'
 
 const ProfileModal = () => {
-  const { user, logout, profileUser } = ChatState()
+  const { user, logout, profileUser, selectedChat } = ChatState()
+
+  const showMessageButton = selectedChat && selectedChat.isGroupChat
+  console.log(showMessageButton)
   const selectUser = UseSelectUser()
 
   const forLoggedInUser = profileUser._id === user._id
@@ -32,13 +35,15 @@ const ProfileModal = () => {
           </div>
           <div className='modal-footer'>
             <button type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Dismiss</button>
-            <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => {
+            {/* <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => {
               console.log('logout')
               logout()
             } : () => {
               console.log('selectuser')
               selectUser(profileUser._id)
-            }}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button>
+            }}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button> */}
+            {forLoggedInUser && <button type='button' className='btn btn-danger' data-bs-dismiss='modal' onClick={() => logout()}>Logout</button>}
+            {!forLoggedInUser && showMessageButton && <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={() => selectUser(profileUser._id)}>Send Message</button>}
           </div>
         </div>
       </div>

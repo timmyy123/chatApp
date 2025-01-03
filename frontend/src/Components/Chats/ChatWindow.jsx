@@ -122,7 +122,7 @@ const ChatWindow = () => {
                     {msg.sender._id !== user._id ?
                       (
                         <>
-                          <UserAvatar userInfo={msg.sender} clickAble={selectedChat.isGroupChat}></UserAvatar>
+                          <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
                           <div className='card px-2  bg-light text-dark justify-content-center'>
 
                             {msg.content}
