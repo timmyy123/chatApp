@@ -45,7 +45,7 @@ const UserAvatar = ({ userInfo, clickAble = false, scale = 1 }) => {
       ref={avatarRef}
       type={clickAble ? 'button' : undefined}
       className='mx-2 justify-content-center align-items-center d-flex bg-dark-subtle'
-      style={{ width: `${40 * scale}px`, height: `${40 * scale}px`, borderRadius: '50%' }}
+      style={{ width: `${40 * scale}px`, height: `${40 * scale}px`, borderRadius: '50%', fontSize: `${18*scale}px` }}
       onClick={handleClick}
     >
       {userInfo.name.charAt(0).toUpperCase()}

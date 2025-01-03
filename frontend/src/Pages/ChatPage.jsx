@@ -19,19 +19,19 @@ const ChatPage = () => {
     <main className="w-100 container-fluid vh-100 d-flex flex-column justify-content-center ">
       <TopBar />
       {/* Always render SearchUser */}
-      {user && <SearchUser toggleFetch={fetchAgain} setToggleFetch={setFetchAgain} />}
-      {user && <GroupChatModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupChatModal>}
-      {profileUser && <ProfileModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ProfileModal>}
-      {selectedChat&& <GroupProfileModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></GroupProfileModal>}
+      {user && <SearchUser />}
+      {user && <GroupChatModal ></GroupChatModal>}
+      {profileUser && <ProfileModal ></ProfileModal>}
+      {selectedChat&& selectedChat.isGroupChat && <GroupProfileModal ></GroupProfileModal>}
 
-      {selectedChat && <ManageGroupModal toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ManageGroupModal>}
+      {selectedChat && <ManageGroupModal ></ManageGroupModal>}
       {user && (
         <div className="row no-gutters">
           <div className={`col-12 col-xl-3 p-0 ${selectedChat ? 'd-none d-xl-block' : ''}`}>
-            <ChatsMenu toggleFetch={fetchAgain}></ChatsMenu>
+            <ChatsMenu ></ChatsMenu>
           </div>
           <div className={`col-12 col-xl-9 p-0 ${selectedChat ? '' : 'd-none d-xl-block'}`}>
-            <ChatWindow toggleFetch={fetchAgain} setToggleFetch={setFetchAgain}></ChatWindow>
+            <ChatWindow ></ChatWindow>
           </div>
         </div>
       )}

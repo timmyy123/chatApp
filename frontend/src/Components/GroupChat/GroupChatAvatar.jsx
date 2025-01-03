@@ -10,7 +10,7 @@ const GroupChatAvatar = ({ clickAble = false, scale = 1 }) => {
       style={{ width: `${40 * scale}px`, height: `${40 * scale}px`, borderRadius: '50%' }}
       data-bs-toggle={clickAble ? 'modal' : undefined}
       data-bs-target={clickAble ? '#groupProfileModal' : undefined}
-    ><i className='bi bi-people-fill'></i>
+    ><i className='bi bi-people-fill' style={{scale: scale}}></i>
     </div>
   )
 }

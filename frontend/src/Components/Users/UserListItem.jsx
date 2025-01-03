@@ -1,13 +1,13 @@
 import React from 'react'
 import UserAvatar from './UserAvatar'
 
-const UserListItem = ({ user, handleFunction, forSideBar }) => {
+const UserListItem = ({ user, handleFunction, dismissTarget = undefined }) => {
   return (
     <div
       className='list-group-item list-group-item-action'
       style={{ cursor: 'pointer' }}
       onClick={handleFunction}
-      data-bs-dismiss={forSideBar ? 'offcanvas' : ''}
+      data-bs-dismiss={dismissTarget}
     >
       <div className='d-flex align-items-center'>
         <UserAvatar userInfo={user}  clickAble={false}/>

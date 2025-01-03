@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
-import { data } from 'react-router-dom'
 import { getOtherUser } from '../config/ChatLogics'
 import UserAvatar from '../Users/UserAvatar'
 import GroupChatAvatar from '../GroupChat/GroupChatAvatar'
 import UseApi from '../../hooks/UseApi'
+import UseLeaveGroup from '../../hooks/UseLeaveGroup'
 
 
-const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
+const ChatWindow = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
@@ -15,6 +15,7 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
   const chatEndRef = useRef(null)
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
+  const leaveGroup = UseLeaveGroup()
 
   const fetchMessages = async () => {
     if (!selectedChat) return
@@ -62,34 +63,6 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
     }
   }
 
-  const leaveGroup = async () => {
-    setLoading(true)
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      }
-      const { data } = await api.put(
-        `/api/chat/groupremove`,
-        {
-          chatId: selectedChat._id,
-          userId: user._id
-        },
-        config
-      );
-      setSelectedChat(null)
-      createToast(`You left the group ${data.chatName}`, 'success')
-      setToggleFetch(!toggleFetch)
-      setLoading(false)
-
-    } catch (error) {
-      createToast('Failed to leave group')
-      console.error(error.message)
-      setLoading(false)
-    }
-  }
-
   const scrollToBottom = () => {
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -115,23 +88,23 @@ const ChatWindow = ({ toggleFetch, setToggleFetch, toggleMobileScreen }) => {
 
               {selectedChat.isGroupChat ? (
                 <>
-                  <GroupChatAvatar chatInfo={selectedChat} clickAble='true'></GroupChatAvatar>
+                  <GroupChatAvatar chatInfo={selectedChat}></GroupChatAvatar>
                   <h5>
                     {selectedChat.chatName}
                   </h5>
                 </>
               ) : (
                 <>
-                  <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} />
+                  <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} clickAble='true' />
                   <h5>
                     {getOtherUser(user, selectedChat.users).name}
                   </h5>
                 </>
               )
               }
-              {selectedChat.isGroupChat && (selectedChat.Admin._id === user._id?  (
+              {selectedChat.isGroupChat && (selectedChat.Admin._id === user._id ? (
                 <button type='button' className='btn btn-warning ms-auto me-2' data-bs-toggle='modal' data-bs-target='#ManageGroupModal'>Manage</button>
-              ):(
+              ) : (
                 <button className='btn btn-danger ms-auto me-2' onClick={() => leaveGroup()}>Leave</button>
               ))}
             </div>

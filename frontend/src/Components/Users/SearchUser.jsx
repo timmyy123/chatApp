@@ -1,35 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { ChatState } from '../Context/ChatProvider'
 import UserListItem from './UserListItem'
 import useSearchUser from '../../hooks/useSearchUser'
-import UseApi from '../../hooks/UseApi'
+import UseSelectUser from '../../hooks/UseSelectUser'
 
-const SearchUser = ({ toggleFetch, setToggleFetch }) => {
+const SearchUser = () => {
   const { search, setSearch, searchResults, loading, handleHide } = useSearchUser('/api/user')
-  const { user, chats, setSelectedChat, createToast } = ChatState()
-  const api = UseApi()
-
-  const selectUser = async (userId) => {
-    try {
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`
-        }
-      }
-      const { data } = await api.post('/api/chat', { userId }, config)
-      setToggleFetch(!toggleFetch)
-      setSelectedChat(data)
-    } catch (error) {
-      createToast('Failed to select user')
-      console.log(error.message)
-    }
-  }
+  const selectUser = UseSelectUser()
 
   useEffect(() => {
     const offcanvasElement = document.getElementById('searchUserOffcanvas')
-
-
     offcanvasElement.addEventListener(
       'hidden.bs.offcanvas',
       handleHide
@@ -69,7 +48,7 @@ const SearchUser = ({ toggleFetch, setToggleFetch }) => {
           <div className='list-group'>
             {searchResults.length > 0 ? (
               searchResults.map(user => (
-                <UserListItem key={user._id} user={user} handleFunction={() => selectUser(user._id)} forSideBar={true}></UserListItem>
+                <UserListItem key={user._id} user={user} handleFunction={() => selectUser(user._id)} dismissTarget='offcanvas'></UserListItem>
               ))
             ) : (
               <div>No users found</div>

@@ -4,14 +4,14 @@ import UseApi from '../../hooks/UseApi';
 import useSearchUser from '../../hooks/useSearchUser';
 import GroupChatModalContent from './GroupChatModalContent';
 
-const GroupChatModal = ({ toggleFetch, setToggleFetch }) => {
+const GroupChatModal = () => {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
   const closeButtonRef = useRef(null); // Ref for the close button
 
   const { search, setSearch, searchResults, loading, handleHide } = useSearchUser('/api/user');
   const api = UseApi();
-  const { user, createToast, setSelectedChat } = ChatState();
+  const { user, createToast, setSelectedChat,toggleFetch, setToggleFetch } = ChatState();
 
   const addUser = (user) => {
     if (!selectedUsers.some((u) => u._id === user._id)) {

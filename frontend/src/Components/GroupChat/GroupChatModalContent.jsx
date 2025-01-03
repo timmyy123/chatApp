@@ -53,7 +53,7 @@ const GroupChatModalContent = ({
         <div className='list-group d-flex align-items-center'>
           {searchResults.length > 0 ? (
             searchResults.map(user => 
-              !selectedUsers.some(u=> u._id === user._id)&&<UserListItem key={user._id} user={user} handleFunction={() => addUser(user)} forSideBar={false} />
+              !selectedUsers.some(u=> u._id === user._id)&&<UserListItem key={user._id} user={user} handleFunction={() => addUser(user)}  />
             )
           ) : (
             <div>No users found</div>

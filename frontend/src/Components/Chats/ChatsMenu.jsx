@@ -3,9 +3,9 @@ import { ChatState } from '../Context/ChatProvider'
 import ChatListItem from './ChatListItem'
 import UseApi from '../../hooks/UseApi'
 
-const ChatsMenu = ({ toggleFetch }) => {
+const ChatsMenu = () => {
   const [loading, setLoading] = useState(false)
-  const { user, chats, setChats } = ChatState()
+  const { user, chats, setChats, toggleFetch } = ChatState()
   const api = UseApi()
 
   const fetchChats = async () => {
@@ -38,10 +38,10 @@ const ChatsMenu = ({ toggleFetch }) => {
     >
       <div
         className='d-flex w-100 align-items-center p-2'
-        style={{ height: '8vh', minHeight: '50px' }}
+        style={{ height: '8vh', minHeight: '50px', minWidth:'330px' }}
         
       >
-        <span className='fw-bold fs-3 flex-grow-1 ms-2' style={{ fontFamily: "Work Sans" }}>My Chats</span>
+        <span className='fw-bold fs-4 flex-grow-1 ms-2' style={{ fontFamily: "Work Sans"}}>My Chats</span>
         <button type='button' className='btn btn-primary d-flex me-4' data-bs-toggle='modal' data-bs-target ='#groupChatModal' style={{minWidth: '180px'}}>
           <p className='fs-6 flex-grow-1 my-0 me-1'>
 

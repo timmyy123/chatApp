@@ -4,12 +4,12 @@ import UseApi from '../../hooks/UseApi';
 import { ChatState } from '../Context/ChatProvider';
 import GroupChatModalContent from './GroupChatModalContent';
 
-const ManageGroupModal = ({ toggleFetch, setToggleFetch }) => {
+const ManageGroupModal = () => {
   const [existingUsers, setExistingUsers] = useState([]);
   const [updateGroupName, setUpdateGroupName] = useState('');
 
   const { search, setSearch, searchResults, loading, setLoading, handleHide } = useSearchUser('/api/user');
-  const { user, selectedChat, setSelectedChat, createToast } = ChatState();
+  const { user, selectedChat, setSelectedChat, createToast, toggleFetch, setToggleFetch } = ChatState();
   const api = UseApi();
 
   const addUser = async (userToAdd) => {

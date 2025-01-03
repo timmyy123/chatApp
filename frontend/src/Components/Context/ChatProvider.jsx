@@ -10,6 +10,7 @@ const ChatProvider = ({ children }) => {
   const [chats, setChats] = useState();
   const [toasts, setToasts] = useState([]); // For managing toasts
   const [profileUser, setProfileUser] = useState()
+  const [toggleFetch, setToggleFetch] = useState(false)
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -95,6 +96,8 @@ const ChatProvider = ({ children }) => {
         setNotification,
         chats,
         setChats,
+        toggleFetch,
+        setToggleFetch,
         createToast, // Expose the toast creation function
         logout
       }}
