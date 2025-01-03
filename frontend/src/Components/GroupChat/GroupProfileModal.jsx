@@ -2,13 +2,11 @@ import React from 'react'
 import GroupChatAvatar from './GroupChatAvatar'
 import UserListItem from '../Users/UserListItem'
 import { ChatState } from '../Context/ChatProvider'
-import UseApi from '../../hooks/UseApi'
 import UseSelectUser from '../../hooks/UseSelectUser'
 import UseLeaveGroup from '../../hooks/UseLeaveGroup'
 
 const GroupProfileModal = () => {
   const { selectedChat, user } = ChatState()
-  const api = UseApi()
   const selectUser = UseSelectUser()
   const leaveGroup = UseLeaveGroup()
 
