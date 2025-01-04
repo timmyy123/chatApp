@@ -16,6 +16,8 @@ const ChatWindow = () => {
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
   const [socketConnected, setSocketConnected] = useState(false)
+  const [typing, setTyping] = useState(false)
+  const [othersTyping, setOthersTyping] = useState(false)
   const api = UseApi()
   const chatEndRef = useRef(null)
 
@@ -46,6 +48,7 @@ const ChatWindow = () => {
 
   const sendMessage = async () => {
     if (!newMessage) return
+    socket.emit('stop typing', selectedChat._id)
     try {
       const config = {
         headers: {
@@ -72,9 +75,30 @@ const ChatWindow = () => {
   }
 
   const scrollToBottom = () => {
+    console.log('scrolled')
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
 
+    }
+  }
+
+  const typingHandler = (e) => {
+    setNewMessage(e.target.value)
+
+    if (!socketConnected) return
+
+    if (!typing) {
+      setTyping(true)
+      socket.emit('typing', selectedChat._id)
+    }
+  }
+
+  const stopTypingHandler = () => {
+    if (!socketConnected) return
+    // setOthersTyping(false)
+    if (typing) {
+      setTyping(false)
+      socket.emit('stop typing', selectedChat._id)
     }
   }
 
@@ -82,6 +106,10 @@ const ChatWindow = () => {
     socket = io(ENDPOINT)
     socket.emit('setup', user._id)
     socket.on('connected', () => setSocketConnected(true))
+    socket.on('typing', () => {setOthersTyping(true)
+      scrollToBottom()
+    })
+    socket.on('stop typing', () => setOthersTyping(false))
   }, [])
 
 
@@ -172,7 +200,12 @@ const ChatWindow = () => {
                   </div>
                 ))
               )}
-              <div ref={chatEndRef} />
+                {othersTyping && 
+                  <i className='bi bi-three-dots ms-3 '>Typing</i>
+                  }
+              <div ref={chatEndRef} style={{height: '2vh'}}>
+
+              </div>
             </div>
           </div>
           <div className='py-2 px-3 border-top' style={{ height: '8vh', minHeight: '58px' }}>
@@ -181,8 +214,9 @@ const ChatWindow = () => {
                 className='form-control'
                 placeholder='Type a message'
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && sendMessage()} />
+                onChange={typingHandler}
+                onBlur={stopTypingHandler}
+                onKeyDown={(e) => e.key === 'Enter' && sendMessage()} />
               <button className='btn btn-primary'
                 onClick={() => sendMessage()}
                 disabled={!newMessage.trim()}>

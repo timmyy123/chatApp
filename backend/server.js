@@ -46,8 +46,14 @@ io.on('connection', (socket) => {
         console.log(newMessageReceived.chat._id)
         socket.in(user._id).emit('message received', newMessageReceived)
       }
-
     });
   })
+
+  socket.on('typing', (room) => socket.in(room).emit('typing'))
+  socket.on('stop typing', (room) => socket.in(room).emit('stop typing'))
+
+  // socket.off('setup', () => {
+  //   console.log('user disconnected')
+  // })
 
 })
