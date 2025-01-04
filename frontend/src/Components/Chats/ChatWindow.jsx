@@ -122,19 +122,22 @@ const ChatWindow = () => {
                     {msg.sender._id !== user._id ?
                       (
                         <>
-                          <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
-                          <div className='card px-2  bg-light text-dark justify-content-center'>
-
+                          <div>
+                            <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
+                          </div>
+                          <div className='card px-2 me-5 d-flex bg-light text-dark justify-content-center'>
                             {msg.content}
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className='card px-2 bg-warning text-white justify-content-center'>
-
+                          <div className='card px-2 ms-5 d-flex bg-warning text-white justify-content-center'>
                             {msg.content}
                           </div>
-                          <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
+                          <div>
+                            <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
+                          </div>
+
                         </>
 
                       )
@@ -146,9 +149,6 @@ const ChatWindow = () => {
               <div ref={chatEndRef} />
             </div>
           </div>
-
-
-
           <div className='py-2 px-3 border-top' style={{ height: '8vh', minHeight: '58px' }}>
             <div className='input-group'>
               <input type="text"
@@ -160,14 +160,10 @@ const ChatWindow = () => {
               <button className='btn btn-primary'
                 onClick={() => sendMessage()}
                 disabled={!newMessage.trim()}>
-
                 send
               </button>
             </div>
-
           </div>
-
-
         </div>
       ) : (
         <div className='d-flex flex-column bg-white w-100 align-items-center justify-content-center' style={{ height: '92vh' }}>

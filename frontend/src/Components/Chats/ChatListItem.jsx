@@ -15,13 +15,14 @@ const ChatListItem = ({ chat }) => {
       className={`d-flex align-items-center p-2 mb-2 rounded ${selectedChat && selectedChat._id === chat._id ? 'bg-info text-white' : 'bg-light'}`}
       style={{ cursor: 'pointer' }}
       onClick={() => setSelectedChat(chat)}>
+      <div>
+        {chat.isGroupChat ? <GroupChatAvatar chatInfo={chat}></GroupChatAvatar> : <UserAvatar userInfo={otherUser} />}
+      </div>
 
-      {chat.isGroupChat ? <GroupChatAvatar chatInfo={chat}></GroupChatAvatar> : <UserAvatar userInfo={otherUser} />}
-
-      <div className='d-flex flex-column flex-grow-1'>
+      <div className='d-flex flex-column flex-grow-1 text-truncate'>
         <strong>{chat.isGroupChat ? chat.chatName : otherUser.name}</strong>
         {chat.latestMessage && (
-          <small className='text-truncate'>
+          <small className='text-truncate '>
             <strong>{chat.latestMessage.sender.name}: </strong>
             {chat.latestMessage.content}
           </small>
