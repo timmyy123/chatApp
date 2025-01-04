@@ -21,8 +21,8 @@ const ChatPage = () => {
       {/* Always render SearchUser */}
       {user && <SearchUser />}
       {user && <GroupChatModal ></GroupChatModal>}
-      {profileUser && <ProfileModal ></ProfileModal>}
-      {selectedChat&& selectedChat.isGroupChat && <GroupProfileModal ></GroupProfileModal>}
+      <ProfileModal ></ProfileModal>
+      {selectedChat && selectedChat.isGroupChat && <GroupProfileModal ></GroupProfileModal>}
 
       {selectedChat && <ManageGroupModal ></ManageGroupModal>}
       {user && (

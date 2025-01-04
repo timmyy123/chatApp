@@ -10,13 +10,13 @@ const ProfileModal = () => {
   console.log(showMessageButton)
   const selectUser = UseSelectUser()
 
-  const forLoggedInUser = profileUser._id === user._id
+  const forLoggedInUser = profileUser ? profileUser._id === user._id : undefined
   console.log('modal rendered')
 
   return (
     <div className='modal fade' id='profileModal' data-bs-backdrop="static" tabIndex={'-1'} aria-labelledby='profileModalLabel' aria-hidden='true'>
       <div className='modal-dialog modal-dialog-centered'>
-        <div className='modal-content'>
+        {profileUser && <div className='modal-content'>
           <div className='modal-header justify-content-center'>
             <h1 className='modal-title fs-5' id='profileModalLabel'>{profileUser._id === user._id ? 'My Profile' : 'User Info'}</h1>
           </div>
@@ -35,17 +35,10 @@ const ProfileModal = () => {
           </div>
           <div className='modal-footer'>
             <button type='button' className='btn btn-secondary' data-bs-dismiss='modal'>Dismiss</button>
-            {/* <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={forLoggedInUser ? () => {
-              console.log('logout')
-              logout()
-            } : () => {
-              console.log('selectuser')
-              selectUser(profileUser._id)
-            }}>{forLoggedInUser ? 'Logout' : 'Send Message'}</button> */}
             {forLoggedInUser && <button type='button' className='btn btn-danger' data-bs-dismiss='modal' onClick={() => logout()}>Logout</button>}
             {!forLoggedInUser && showMessageButton && <button type='button' className='btn btn-primary' data-bs-dismiss='modal' onClick={() => selectUser(profileUser._id)}>Send Message</button>}
           </div>
-        </div>
+        </div>}
       </div>
 
     </div>
