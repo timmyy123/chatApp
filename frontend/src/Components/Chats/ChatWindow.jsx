@@ -5,12 +5,17 @@ import UserAvatar from '../Users/UserAvatar'
 import GroupChatAvatar from '../GroupChat/GroupChatAvatar'
 import UseApi from '../../hooks/UseApi'
 import UseLeaveGroup from '../../hooks/UseLeaveGroup'
+import io from 'socket.io-client'
+
+const ENDPOINT = 'http://localhost:5000'
+let socket
 
 
 const ChatWindow = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
+  const [socketConnected, setSocketConnected] = useState(false)
   const api = UseApi()
   const chatEndRef = useRef(null)
 
@@ -30,6 +35,8 @@ const ChatWindow = () => {
       const { data } = await api.get(`/api/message/${selectedChat._id}`, config)
       setMessages(data)
       setLoading(false)
+
+      socket.emit('join chat', selectedChat._id)
     } catch (error) {
       console.error(error.message)
       createToast('Failed to fetch messages')
@@ -55,6 +62,7 @@ const ChatWindow = () => {
         },
         config
       )
+      socket.emit('new message', data)
       setMessages([...messages, data])
       setNewMessage('')
     } catch (error) {
@@ -71,9 +79,27 @@ const ChatWindow = () => {
   }
 
   useEffect(() => {
+    socket = io(ENDPOINT)
+    socket.emit('setup', user._id)
+    socket.on('connected', () => setSocketConnected(true))
+  }, [])
+
+
+  useEffect(() => {
     fetchMessages()
+    console.log(selectedChat)
   }, [selectedChat])
 
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived) => {
+      console.log(selectedChat, newMessageReceived)
+      if (selectedChat && selectedChat._id !== newMessageReceived.chat._id) {
+        // give notification
+      } else {
+        setMessages([...messages, newMessageReceived])
+      }
+    })
+  })
   useEffect(() => {
     scrollToBottom()
   }, [messages])

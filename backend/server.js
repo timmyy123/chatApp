@@ -17,4 +17,37 @@ app.use('/api/chat', chatRoutes)
 app.use('/api/message', messageRoutes)
 const PORT = process.env.PORT || 5001
 
-app.listen(PORT, console.log(`Server Started on Port ${PORT}`))
+const server = app.listen(PORT, console.log(`Server Started on Port ${PORT}`))
+
+const io = require('socket.io')(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: 'http://localhost:3000'
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log(`Socket connected: ${socket.id}`)
+  socket.on('setup', (userId) => {
+    socket.join(userId)
+    socket.emit('connected')
+  })
+
+  socket.on('join chat', (room) => {
+    socket.join(room)
+    console.log(`user joined room ${room}`)
+  })
+
+  socket.on('new message', (newMessageReceived) => {
+    let chat = newMessageReceived.chat
+    if (!chat.users) return console.log('chat.users not defined')
+    chat.users.forEach(user => {
+      if (user._id !== newMessageReceived.sender._id) {
+        console.log(newMessageReceived.chat._id)
+        socket.in(user._id).emit('message received', newMessageReceived)
+      }
+
+    });
+  })
+
+})

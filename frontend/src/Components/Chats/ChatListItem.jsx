@@ -18,11 +18,10 @@ const ChatListItem = ({ chat }) => {
       <div>
         {chat.isGroupChat ? <GroupChatAvatar chatInfo={chat}></GroupChatAvatar> : <UserAvatar userInfo={otherUser} />}
       </div>
-
       <div className='d-flex flex-column flex-grow-1 text-truncate'>
         <strong>{chat.isGroupChat ? chat.chatName : otherUser.name}</strong>
         {chat.latestMessage && (
-          <small className='text-truncate '>
+          <small className='text-truncate'>
             <strong>{chat.latestMessage.sender.name}: </strong>
             {chat.latestMessage.content}
           </small>
