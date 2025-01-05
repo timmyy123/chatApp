@@ -1,6 +1,6 @@
 import './App.css';
 import LoginPage from './Pages/LoginPage';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-dom'
 import ChatPage from './Pages/ChatPage';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
