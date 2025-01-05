@@ -4,6 +4,7 @@ const userRoutes = require('./routes/userRoutes')
 const chatRoutes = require('./routes/chatRoutes')
 const messageRoutes = require('./routes/messageRoutes')
 const connectDB = require('./config/db')
+const path = require('path')
 
 dotenv.config()
 connectDB()
@@ -15,6 +16,19 @@ app.use(express.json())
 app.use('/api/user', userRoutes)
 app.use('/api/chat', chatRoutes)
 app.use('/api/message', messageRoutes)
+
+// ---------Deployment-----------
+const dirname = path.resolve()
+console.log(dirname)
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(dirname, '/frontend/build')))
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(dirname, 'frontend', 'build', 'index.html'))
+  })
+
+}
+// ---------Deployment-----------
 const PORT = process.env.PORT || 5001
 
 const server = app.listen(PORT, console.log(`Server Started on Port ${PORT}`))

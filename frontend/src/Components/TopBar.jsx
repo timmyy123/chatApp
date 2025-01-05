@@ -6,7 +6,7 @@ import styles from './Style.module.css'
 const TopBar = () => {
   const { user } = ChatState();
   return (
-    <div className={`row navbar p-1 ${styles.topBar}`} >
+    <div className={`row navbar  ${styles.topBar}`} >
       <div className="col-3">
         <button 
         type="button"
