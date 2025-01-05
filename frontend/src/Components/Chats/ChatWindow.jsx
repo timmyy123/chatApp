@@ -15,12 +15,12 @@ const ChatWindow = () => {
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
   const [socketConnected, setSocketConnected] = useState(false)
-  const [othersTyping, setOthersTyping] = useState(false)
+  const [othersTyping, setOthersTyping] = useState()
   const api = UseApi()
   const chatEndRef = useRef(null)
   const keyStroke = useRef(0)
 
-  const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
+  const { selectedChat, setSelectedChat, user, createToast } = ChatState()
   const leaveGroup = UseLeaveGroup()
 
   const fetchMessages = async () => {
@@ -86,7 +86,7 @@ const ChatWindow = () => {
 
     if (!socketConnected) return
 
-    socket.emit('typing', selectedChat._id)
+    socket.emit('typing', selectedChat._id, user)
 
     const keyStrokePre = keyStroke.current
     console.log(keyStrokePre, keyStroke.current)
@@ -111,8 +111,14 @@ const ChatWindow = () => {
     socket = io(ENDPOINT)
     socket.emit('setup', user._id)
     socket.on('connected', () => setSocketConnected(true))
-    socket.on('typing', () => setOthersTyping(true))
-    socket.on('stop typing', () => setOthersTyping(false))
+    socket.on('typing', (typingUser) => setOthersTyping(typingUser))
+    socket.on('stop typing', () => setOthersTyping(undefined))
+
+    return () => {
+      socket.off('connected')
+      socket.off('typing')
+      socket.off('stop typing')
+    }
   }, [])
 
 
@@ -124,9 +130,7 @@ const ChatWindow = () => {
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
       console.log(selectedChat, newMessageReceived)
-      if (selectedChat && selectedChat._id !== newMessageReceived.chat._id) {
-        // give notification
-      } else {
+      if (selectedChat && selectedChat._id === newMessageReceived.chat._id) {
         setMessages([...messages, newMessageReceived])
       }
     })
@@ -134,6 +138,10 @@ const ChatWindow = () => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    setNewMessage('')
+  }, [selectedChat])
 
   return (
     <div>
@@ -191,21 +199,24 @@ const ChatWindow = () => {
                           <div className='card px-2 ms-5 d-flex bg-warning text-white justify-content-center'>
                             {msg.content}
                           </div>
-                          <div>
-                            <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
-                          </div>
                         </>
                       )
                     }
                   </div>
                 ))
               )}
-              {othersTyping &&
-                <div className='ms-3 d-inline-flex badge rounded-pill text-bg-light d-block'>
-                  <div className='spinner-grow spinner-grow-sm text-warning d-flex'></div>
-                  <div className='spinner-grow spinner-grow-sm text-success d-flex ms-1'></div>
-                  <div className='spinner-grow spinner-grow-sm text-danger d-flex ms-1'></div>
+              {othersTyping && (
+                <div className='d-flex align-items-center'>
+                  <div>
+                    <UserAvatar userInfo={othersTyping}></UserAvatar>
+                  </div>
+                  <div className=' d-inline-flex badge rounded-pill text-bg-light '>
+                    <div className='spinner-grow spinner-grow-sm text-warning d-flex'></div>
+                    <div className='spinner-grow spinner-grow-sm text-success d-flex ms-1'></div>
+                    <div className='spinner-grow spinner-grow-sm text-danger d-flex ms-1'></div>
+                  </div>
                 </div>
+              )
               }
               <div ref={chatEndRef} style={{ height: '2vh' }}></div>
             </div>

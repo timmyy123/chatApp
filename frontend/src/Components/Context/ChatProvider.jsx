@@ -6,27 +6,18 @@ const ChatContext = createContext();
 const ChatProvider = ({ children }) => {
   const [selectedChat, setSelectedChat] = useState(JSON.parse(sessionStorage.getItem('selectedChat'))||undefined);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('userInfo'))||undefined);
-  const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState();
   const [toasts, setToasts] = useState([]); // For managing toasts
   const [profileUser, setProfileUser] = useState()
   const [toggleFetch, setToggleFetch] = useState(false)
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'))||undefined;
-  //   setUser(userInfo);
-  //   if (!userInfo) navigate('/');
-  // }, [navigate]);
-
-  // console.log('rendered', profileUser)
+  
   const logout = () => {
     // Clear user data from state and localStorage
     setUser(undefined);
     navigate('/');
     setSelectedChat(undefined);
     setProfileUser(undefined)
-    setNotification([]);
     setChats([]);
   
     // Clear user data from localStorage
@@ -92,8 +83,6 @@ const ChatProvider = ({ children }) => {
         setUser,
         profileUser,
         setProfileUser,
-        notification,
-        setNotification,
         chats,
         setChats,
         toggleFetch,
