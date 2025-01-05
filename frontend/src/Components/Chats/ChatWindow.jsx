@@ -91,11 +91,16 @@ const ChatWindow = () => {
       setTyping(true)
       socket.emit('typing', selectedChat._id)
     }
+
+    setTimeout(() => {
+      setTyping(false)
+      socket.emit('stop typing', selectedChat._id)
+      
+    }, 3000);
   }
 
   const stopTypingHandler = () => {
     if (!socketConnected) return
-    // setOthersTyping(false)
     if (typing) {
       setTyping(false)
       socket.emit('stop typing', selectedChat._id)
@@ -106,9 +111,7 @@ const ChatWindow = () => {
     socket = io(ENDPOINT)
     socket.emit('setup', user._id)
     socket.on('connected', () => setSocketConnected(true))
-    socket.on('typing', () => {setOthersTyping(true)
-      scrollToBottom()
-    })
+    socket.on('typing', () => setOthersTyping(true))
     socket.on('stop typing', () => setOthersTyping(false))
   }, [])
 
@@ -201,7 +204,12 @@ const ChatWindow = () => {
                 ))
               )}
                 {othersTyping && 
-                  <i className='bi bi-three-dots ms-3 '>Typing</i>
+                <div className='ms-3 d-inline-flex badge rounded-pill text-bg-light d-block'>
+                  <div className='spinner-grow spinner-grow-sm text-warning d-flex'></div>
+                  <div className='spinner-grow spinner-grow-sm text-success d-flex ms-1'></div>
+                  <div className='spinner-grow spinner-grow-sm text-danger d-flex ms-1'></div>
+                </div>
+                  // <i className='bi bi-three-dots ms-3 '>Typing</i>
                   }
               <div ref={chatEndRef} style={{height: '2vh'}}>
 
