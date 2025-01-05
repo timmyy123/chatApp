@@ -146,9 +146,9 @@ const ChatWindow = () => {
   return (
     <div>
       {selectedChat ? (
-        <div className='d-flex flex-column bg-white' style={{ height: '92vh' }}>
+        <div className='d-flex flex-column ' style={{ height: '92vh'}}>
           <div >
-            <div className='bg-light border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px' }}>
+            <div className='bg-danger bg-gradient bg-opacity-10 border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px' }}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
               {selectedChat.isGroupChat ? (
@@ -239,8 +239,8 @@ const ChatWindow = () => {
           </div>
         </div>
       ) : (
-        <div className='d-flex flex-column bg-white w-100 align-items-center justify-content-center' style={{ height: '92vh' }}>
-          <h4>Select a chat to start messaging</h4>
+        <div className='d-flex flex-column  w-100 align-items-center justify-content-center' style={{ height: '92vh' }}>
+          <h4 className='text-success'>Select a chat to start messaging</h4>
         </div>
       )}
     </div>
