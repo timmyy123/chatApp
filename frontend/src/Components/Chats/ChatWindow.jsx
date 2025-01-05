@@ -10,16 +10,15 @@ import io from 'socket.io-client'
 const ENDPOINT = 'http://localhost:5000'
 let socket
 
-
 const ChatWindow = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
   const [newMessage, setNewMessage] = useState('')
   const [socketConnected, setSocketConnected] = useState(false)
-  const [typing, setTyping] = useState(false)
   const [othersTyping, setOthersTyping] = useState(false)
   const api = UseApi()
   const chatEndRef = useRef(null)
+  const keyStroke = useRef(0)
 
   const { selectedChat, setSelectedChat, user, notification, setNotification, createToast } = ChatState()
   const leaveGroup = UseLeaveGroup()
@@ -78,33 +77,34 @@ const ChatWindow = () => {
     console.log('scrolled')
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
-
     }
   }
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value)
+    keyStroke.current += 1
 
     if (!socketConnected) return
 
-    if (!typing) {
-      setTyping(true)
-      socket.emit('typing', selectedChat._id)
-    }
+    socket.emit('typing', selectedChat._id)
+
+    const keyStrokePre = keyStroke.current
+    console.log(keyStrokePre, keyStroke.current)
+
 
     setTimeout(() => {
-      setTyping(false)
-      socket.emit('stop typing', selectedChat._id)
-      
-    }, 3000);
+      console.log(keyStrokePre, keyStroke.current)
+      if (keyStrokePre === keyStroke.current) {
+
+        socket.emit('stop typing', selectedChat._id)
+      }
+    }, 1500);
   }
 
   const stopTypingHandler = () => {
     if (!socketConnected) return
-    if (typing) {
-      setTyping(false)
-      socket.emit('stop typing', selectedChat._id)
-    }
+
+    socket.emit('stop typing', selectedChat._id)
   }
 
   useEffect(() => {
@@ -194,26 +194,20 @@ const ChatWindow = () => {
                           <div>
                             <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
                           </div>
-
                         </>
-
                       )
                     }
-
                   </div>
                 ))
               )}
-                {othersTyping && 
+              {othersTyping &&
                 <div className='ms-3 d-inline-flex badge rounded-pill text-bg-light d-block'>
                   <div className='spinner-grow spinner-grow-sm text-warning d-flex'></div>
                   <div className='spinner-grow spinner-grow-sm text-success d-flex ms-1'></div>
                   <div className='spinner-grow spinner-grow-sm text-danger d-flex ms-1'></div>
                 </div>
-                  // <i className='bi bi-three-dots ms-3 '>Typing</i>
-                  }
-              <div ref={chatEndRef} style={{height: '2vh'}}>
-
-              </div>
+              }
+              <div ref={chatEndRef} style={{ height: '2vh' }}></div>
             </div>
           </div>
           <div className='py-2 px-3 border-top' style={{ height: '8vh', minHeight: '58px' }}>
