@@ -8,7 +8,7 @@ import UseLeaveGroup from '../../hooks/UseLeaveGroup'
 import io from 'socket.io-client'
 import styles from '../Style.module.css';
 
-const ENDPOINT = 'http://localhost:5000'
+const ENDPOINT = 'https://ti-talk.onrender.com'
 let socket
 
 const ChatWindow = () => {

@@ -10,10 +10,7 @@ import ProfileModal from "../Components/Users/ProfileModal";
 import GroupProfileModal from "../Components/GroupChat/GroupProfileModal";
 
 const ChatPage = () => {
-  const [fetchAgain, setFetchAgain] = useState(false);
-
-
-  const { user, profileUser, selectedChat } = ChatState();
+  const { user, selectedChat } = ChatState();
 
   return (
     <main className="w-100 container-fluid vh-100 d-flex flex-column justify-content-center ">
