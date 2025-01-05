@@ -1,11 +1,12 @@
 import React from "react";
 import UserAvatar from "./Users/UserAvatar";
 import { ChatState } from "./Context/ChatProvider";
+import styles from './Style.module.css'
 
 const TopBar = () => {
   const { user } = ChatState();
   return (
-    <div className="row navbar p-1 bg-warning bg-gradient bg-opacity-10" style={{  height: '8vh', minHeight: '50px'}}>
+    <div className={`row navbar p-1 ${styles.topBar}`} >
       <div className="col-3">
         <button 
         type="button"
@@ -22,7 +23,7 @@ const TopBar = () => {
         </button>
       </div>
       <div className="col-6 text-center">
-        <h3 className="text-success">TiTalk</h3>
+        <h1 className={`text-success ${styles.title}`}>Ti-Talk</h1>
       </div>
       <div className="col-3 d-flex align-items-center justify-content-end">
         {user && <UserAvatar userInfo={user} clickAble={true}/>}

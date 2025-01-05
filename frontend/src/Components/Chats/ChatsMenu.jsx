@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ChatState } from '../Context/ChatProvider'
 import ChatListItem from './ChatListItem'
 import UseApi from '../../hooks/UseApi'
+import styles from '../Style.module.css'
 
 const ChatsMenu = () => {
   const [loading, setLoading] = useState(false)
@@ -33,7 +34,7 @@ const ChatsMenu = () => {
   }, [toggleFetch])
   return (
     <div
-      className={`d-flex flex-column bg-success bg-gradient bg-opacity-10 w-100`}
+      className={`d-flex flex-column ${styles.chatsMenu}`}
       style={{ height: '92vh' }}
     >
       <div

@@ -6,6 +6,7 @@ import GroupChatAvatar from '../GroupChat/GroupChatAvatar'
 import UseApi from '../../hooks/UseApi'
 import UseLeaveGroup from '../../hooks/UseLeaveGroup'
 import io from 'socket.io-client'
+import styles from '../Style.module.css';
 
 const ENDPOINT = 'http://localhost:5000'
 let socket
@@ -146,9 +147,9 @@ const ChatWindow = () => {
   return (
     <div>
       {selectedChat ? (
-        <div className='d-flex flex-column ' style={{ height: '92vh'}}>
+        <div className={`d-flex flex-column ${styles.chatWindow}`}>
           <div >
-            <div className='bg-danger bg-gradient bg-opacity-10 border-bottom d-flex align-items-center p-2' style={{ height: '7vh', minHeight: '50px' }}>
+            <div className={`d-flex align-items-center p-2 ${styles.chatWindowHeader}`}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
               {selectedChat.isGroupChat ? (
@@ -173,7 +174,7 @@ const ChatWindow = () => {
                 <button className='btn btn-danger ms-auto me-2' onClick={() => leaveGroup()}>Leave</button>
               ))}
             </div>
-            <div className={` flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center' : ''} p-3`} style={{ height: '77vh' }}>
+            <div className={`flex-grow-1 overflow-auto ${loading ? 'd-flex align-items-center justify-content-center' : ''} p-3 ${styles.chatWindowBody}`}>
               {loading ? (
                 <div className="text-center">
                   <div className="spinner-border" role="status">
@@ -190,13 +191,13 @@ const ChatWindow = () => {
                           <div>
                             <UserAvatar userInfo={msg.sender} clickAble={true}></UserAvatar>
                           </div>
-                          <div className='card px-2 me-5 d-flex bg-light text-dark justify-content-center'>
+                          <div className='card px-2 me-5 d-flex bg-warning bg-gradient bg-opacity-10 text-dark justify-content-center'>
                             {msg.content}
                           </div>
                         </>
                       ) : (
                         <>
-                          <div className='card px-2 ms-5 d-flex bg-warning text-white justify-content-center'>
+                          <div className='card px-2 ms-5 d-flex bg-success bg-gradient bg-opacity-25 text-light justify-content-center'>
                             {msg.content}
                           </div>
                         </>
@@ -221,7 +222,7 @@ const ChatWindow = () => {
               <div ref={chatEndRef} style={{ height: '2vh' }}></div>
             </div>
           </div>
-          <div className='py-2 px-3 border-top' style={{ height: '8vh', minHeight: '58px' }}>
+          <div className={`py-2 px-3 border-top ${styles.chatWindowFooter}`}>
             <div className='input-group'>
               <input type="text"
                 className='form-control'
@@ -239,7 +240,7 @@ const ChatWindow = () => {
           </div>
         </div>
       ) : (
-        <div className='d-flex flex-column  w-100 align-items-center justify-content-center' style={{ height: '92vh' }}>
+        <div className={`d-flex flex-column  w-100 align-items-center justify-content-center ${styles.noChatSelected}`} >
           <h4 className='text-success'>Select a chat to start messaging</h4>
         </div>
       )}

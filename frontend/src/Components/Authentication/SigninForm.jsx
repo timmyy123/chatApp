@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import styles from './Form.module.css'
+import styles from '../Style.module.css'
 import { useNavigate } from 'react-router-dom'
 import { ChatState } from '../Context/ChatProvider'
 import UseApi from '../../hooks/UseApi'
