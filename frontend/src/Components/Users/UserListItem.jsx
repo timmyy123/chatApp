@@ -10,11 +10,14 @@ const UserListItem = ({ user, handleFunction, dismissTarget = undefined }) => {
       data-bs-dismiss={dismissTarget}
     >
       <div className='d-flex align-items-center'>
-        <UserAvatar userInfo={user}  clickAble={false}/>
         <div>
-          <strong>{user.name}</strong>
-          <br />
-          <small>{user.email}</small>
+
+          <UserAvatar userInfo={user} clickAble={false} />
+        </div>
+        <div >
+          <strong className='card border-0 ' style={{ maxWidth: '280px' }}>{user.name}</strong>
+      
+          <small className='card border-0' style={{ maxWidth: '280px' }}>{user.email}</small>
         </div>
       </div>
     </div>

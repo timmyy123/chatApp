@@ -23,12 +23,12 @@ const ProfileModal = () => {
               <UserAvatar userInfo={profileUser} clickAble={false} scale={2}></UserAvatar>
             </div>
             <div className=' d-flex justify-content-center'>
-              <h2 className='col-5 text-start fs-5 '>Username:</h2>
-              <h2 className='col-2  p-0 text-start fs-5'>{profileUser.name}</h2>
+              <h2 className='col-5 text-start fs-6'>Username:</h2>
+              <h2 className='col-3  p-0 text-start fs-6 card border-0'>{profileUser.name}</h2>
             </div>
             <div className=' d-flex justify-content-center'>
-              <h2 className='col-5 text-start fs-5'>Email:</h2>
-              <h2 className='col-2  p-0 text-start fs-5'>{profileUser.email}</h2>
+              <h2 className='col-5 text-start fs-6'>Email:</h2>
+              <h2 className='col-3  p-0 text-start fs-6 card border-0'>{profileUser.email}</h2>
             </div>
           </div>
           <div className='modal-footer'>

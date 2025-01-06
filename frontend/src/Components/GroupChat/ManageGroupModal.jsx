@@ -34,7 +34,7 @@ const ManageGroupModal = () => {
       setLoading(false);
     } catch (error) {
       createToast('Failed to add user');
-      console.log(error.message);
+      console.log(error.response.data.message||'Unexpected Error');
       setLoading(false);
     }
   };
@@ -69,7 +69,7 @@ const ManageGroupModal = () => {
       setLoading(false);
     } catch (error) {
       createToast('Failed to remove user');
-      console.log(error.message);
+      console.log(error.response.data.message||'Unexpected Error');
       setLoading(false);
     }
   };
@@ -100,7 +100,7 @@ const ManageGroupModal = () => {
       setToggleFetch(!toggleFetch);
     } catch (error) {
       createToast('Failed to rename group');
-      console.error(error.message);
+      console.error(error.response.data.message||'Unexpected Error');
     }
   };
 
