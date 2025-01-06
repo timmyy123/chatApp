@@ -7,11 +7,9 @@ const ProfileModal = () => {
   const { user, logout, profileUser, selectedChat } = ChatState()
 
   const showMessageButton = selectedChat && selectedChat.isGroupChat
-  console.log(showMessageButton)
   const selectUser = UseSelectUser()
 
   const forLoggedInUser = profileUser ? profileUser._id === user._id : undefined
-  console.log('modal rendered')
 
   return (
     <div className='modal fade' id='profileModal' data-bs-backdrop="static" tabIndex={'-1'} aria-labelledby='profileModalLabel' aria-hidden='true'>

@@ -19,7 +19,6 @@ app.use('/api/message', messageRoutes)
 
 // ---------Deployment-----------
 const dirname = path.resolve()
-console.log(dirname)
 if(process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(dirname, '/frontend/build')))
 
@@ -57,7 +56,6 @@ io.on('connection', (socket) => {
     if (!chat.users) return console.log('chat.users not defined')
     chat.users.forEach(user => {
       if (user._id !== newMessageReceived.sender._id) {
-        console.log(newMessageReceived.chat._id)
         socket.in(user._id).emit('message received', newMessageReceived)
       }
     });

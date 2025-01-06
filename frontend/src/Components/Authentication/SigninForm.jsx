@@ -11,7 +11,6 @@ const SigninForm = () => {
   const navigate = useNavigate()
   const {user, setUser, createToast} = ChatState()
   const api = UseApi()
-  console.log(user)
   const handleSubmit = async(e) => {
     e.preventDefault()
     setLoading(true)

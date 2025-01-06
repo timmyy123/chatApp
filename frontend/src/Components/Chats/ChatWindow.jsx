@@ -75,7 +75,6 @@ const ChatWindow = () => {
   }
 
   const scrollToBottom = () => {
-    console.log('scrolled')
     if (chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
@@ -90,11 +89,8 @@ const ChatWindow = () => {
     socket.emit('typing', selectedChat._id, user)
 
     const keyStrokePre = keyStroke.current
-    console.log(keyStrokePre, keyStroke.current)
-
 
     setTimeout(() => {
-      console.log(keyStrokePre, keyStroke.current)
       if (keyStrokePre === keyStroke.current) {
 
         socket.emit('stop typing', selectedChat._id)
@@ -125,12 +121,10 @@ const ChatWindow = () => {
 
   useEffect(() => {
     fetchMessages()
-    console.log(selectedChat)
   }, [selectedChat])
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
-      console.log(selectedChat, newMessageReceived)
       if (selectedChat && selectedChat._id === newMessageReceived.chat._id) {
         setMessages([...messages, newMessageReceived])
       }

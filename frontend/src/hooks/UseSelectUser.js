@@ -6,7 +6,6 @@ const UseSelectUser = () => {
   const { user, createToast, setSelectedChat, toggleFetch, setToggleFetch } = ChatState()
   const api = UseApi()
   const selectUser = async (userId) => {
-    console.log(userId._id, userId)
     if (user._id === userId) {
       createToast("Can't chat with yourself")
       return

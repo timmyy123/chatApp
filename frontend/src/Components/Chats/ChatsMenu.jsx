@@ -10,7 +10,6 @@ const ChatsMenu = () => {
   const api = UseApi()
 
   const fetchChats = async () => {
-    console.log('fetch')
     try {
       setLoading(true)
       const config = {
