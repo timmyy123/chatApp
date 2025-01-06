@@ -8,7 +8,7 @@ import UseLeaveGroup from '../../hooks/UseLeaveGroup'
 import io from 'socket.io-client'
 import styles from '../Style.module.css';
 
-const ENDPOINT = 'https://ti-talk.onrender.com'
+const ENDPOINT = 'https://ti-talk.onrender.com' //'http://localhost:5000' 
 let socket
 
 const ChatWindow = () => {
@@ -141,7 +141,7 @@ const ChatWindow = () => {
   return (
     <div>
       {selectedChat ? (
-        <div className={`d-flex flex-column`}>
+        <div className={`d-flex flex-column`} style={{height: '92vh'}}>
           <div >
             <div className={`d-flex align-items-center border-bottom p-2 ${styles.chatWindowHeader}`}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
