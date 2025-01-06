@@ -6,7 +6,7 @@ import styles from './Style.module.css'
 const TopBar = () => {
   const { user } = ChatState();
   return (
-    <div className={`row navbar  ${styles.topBar}`} >
+    <div className={`row navbar border-bottom  ${styles.topBar}`} >
       <div className="col-3">
         <button 
         type="button"
@@ -23,7 +23,7 @@ const TopBar = () => {
         </button>
       </div>
       <div className="col-6 text-center">
-        <h1 className={`text-success ${styles.title}`}>Ti-Talk</h1>
+        <h1 className={`${styles.title}`}>Ti-Talk</h1>
       </div>
       <div className="col-3 d-flex align-items-center justify-content-end">
         {user && <UserAvatar userInfo={user} clickAble={true}/>}

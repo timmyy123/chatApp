@@ -21,19 +21,17 @@ button.customBtn:hover {
   font-family: 'Roboto', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
-  color: #619d969b;
+  color: #6bb3879b;
 }
 
 .topBar {
-  background-color: rgba(104, 242, 194, 0.235);
+  background-color: rgba(104, 178, 242, 0.235);
   height: 8vh;
   min-height: 50px;
 }
 
-
-
 .chatsMenu {
-  background-color: rgba(127, 255, 212, 0.358); 
+  background-color: rgba(161, 186, 230, 0.297); 
   height: 92vh;
 }
 
@@ -42,13 +40,8 @@ button.customBtn:hover {
   height: 92vh;
 }
 
-.chatWindow {
-  background-color: rgba(126, 193, 167, 0.016); 
-  height: 92vh;
-}
-
 .chatWindowHeader {
-  background-color: rgba(122, 232, 138, 0.276); 
+  background-color: rgba(108, 195, 233, 0.199); 
   height: 7vh;
   min-height: 50px;
 }
@@ -59,7 +52,7 @@ button.customBtn:hover {
 }
 
 .chatWindowFooter {
-  background-color: rgba(127, 255, 212, 0.429);
+  background-color: rgba(108, 195, 233, 0.199);
   height: 8vh;
   min-height: 58px;
 }

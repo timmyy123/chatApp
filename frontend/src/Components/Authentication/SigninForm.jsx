@@ -31,8 +31,7 @@ const SigninForm = () => {
         navigate('/chats')
 
       } catch (error) {
-
-        createToast(error.message || 'Unexpected error')
+        createToast(error.response.data.message || 'Unexpected error')
         setLoading(false)
       }
     } else {
@@ -61,7 +60,7 @@ const SigninForm = () => {
           ref={password}
           />
           <div className='col-12 col-md-6 mt-3 px-1'> 
-            <button type='submit' className={`btn btn-primary  ${styles.customBtn}`} disabled={loading}>{loading? 'Loading...':'Sign In'}</button>
+            <button type='submit' className={`btn btn-primary d-flex justify-content-center  ${styles.customBtn}`} disabled={loading}>{loading? 'Loading...':'Sign In'}</button>
           </div>
           <div className='col-12 col-md-6 mt-3 px-1'>
             <button type='button' className={`btn btn-primary  ${styles.customBtn}`} onClick={()=>navigate('/signup')}>Sign Up</button>
