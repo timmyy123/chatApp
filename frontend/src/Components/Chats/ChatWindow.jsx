@@ -143,7 +143,7 @@ const ChatWindow = () => {
       {selectedChat ? (
         <div className={`d-flex flex-column`}>
           <div >
-            <div className={`d-flex align-items-center p-2 ${styles.chatWindowHeader}`}>
+            <div className={`d-flex align-items-center border-bottom p-2 ${styles.chatWindowHeader}`}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
               {selectedChat.isGroupChat ? (
