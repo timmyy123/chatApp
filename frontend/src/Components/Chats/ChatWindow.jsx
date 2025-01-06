@@ -40,7 +40,7 @@ const ChatWindow = () => {
 
       socket.emit('join chat', selectedChat._id)
     } catch (error) {
-      console.error(error.message)
+      console.error(error.response.data.message || 'Unexpected Error')
       createToast('Failed to fetch messages')
       setLoading(false)
     }
@@ -69,7 +69,7 @@ const ChatWindow = () => {
       setMessages([...messages, data])
       setNewMessage('')
     } catch (error) {
-      console.error(error.message)
+      console.error(error.response.data.message || 'Unexpected Error')
       createToast('Failed to send message')
     }
   }
@@ -141,22 +141,28 @@ const ChatWindow = () => {
   return (
     <div>
       {selectedChat ? (
-        <div className={`d-flex flex-column ${styles.chatWindow}`}>
+        <div className={`d-flex flex-column`}>
           <div >
             <div className={`d-flex align-items-center p-2 ${styles.chatWindowHeader}`}>
               <i className='bi bi-arrow-left d-block d-xl-none' onClick={() => setSelectedChat(undefined)}></i>
 
               {selectedChat.isGroupChat ? (
                 <>
-                  <GroupChatAvatar chatInfo={selectedChat} clickAble='true'></GroupChatAvatar>
-                  <h5>
+                  <div>
+
+                    <GroupChatAvatar chatInfo={selectedChat} clickAble='true'></GroupChatAvatar>
+                  </div>
+                  <h5 className='text-truncate'>
                     {selectedChat.chatName}
                   </h5>
                 </>
               ) : (
                 <>
-                  <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} clickAble='true' />
-                  <h5>
+                  <div>
+                    <UserAvatar userInfo={getOtherUser(user, selectedChat.users)} clickAble='true' />
+                  </div>
+
+                  <h5 className='text-truncate'>
                     {getOtherUser(user, selectedChat.users).name}
                   </h5>
                 </>

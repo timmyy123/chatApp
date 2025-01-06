@@ -3,15 +3,15 @@ const User = require('../models/userModel')
 const generateToken = require('../config/generateToken')
 
 const registerUser = asyncHandler(async (req, res) => {
-  const {name, email, password} = req.body
+  const { name, email, password } = req.body
 
-  if(!name || !email || !password) {
-    res.status(400).json({error:'Please fill all the fields'})
+  if (!name || !email || !password) {
+    res.status(400).json({ error: 'Please fill all the fields' })
   }
-  const userExists = await User.findOne({email})
+  const userExists = await User.findOne({ email })
 
-  if(userExists) {
-    res.status(400).json({error:"A user with this email already exists"})
+  if (userExists) {
+    res.status(400).json({ message: "A user with this email already exists" })
   }
 
   const user = await User.create({
@@ -20,7 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password
   })
 
-  if(user){
+  if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -28,16 +28,16 @@ const registerUser = asyncHandler(async (req, res) => {
       token: generateToken(user._id)
     })
   } else {
-    res.status(400).json({error:'Failed to create user'})
+    res.status(400).json({ error: 'Failed to create user' })
   }
 })
 
-const authUser = asyncHandler(async(req, res) => {
-  const {email, password} = req.body
-  
-  const user = await User.findOne({email})
+const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body
 
-  if(user && (await user.matchPassword(password))) {
+  const user = await User.findOne({ email })
+
+  if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -45,7 +45,7 @@ const authUser = asyncHandler(async(req, res) => {
       token: generateToken(user._id)
     })
   } else {
-    res.status(401).json({error:'Email or Password does not match'})
+    res.status(401).json({ message: 'Email or Password does not match' })
   }
 })
 
@@ -53,13 +53,13 @@ const searchUsers = asyncHandler(async (req, res) => {
   const keyword = req.query.search
     ? {
       $or: [
-        {name: {$regex: req.query.search, $options: 'i'}},
-        {email: req.query.search}
+        { name: { $regex: req.query.search, $options: 'i' } },
+        { email: req.query.search }
       ]
-    }: {}
+    } : {}
 
-    const users = await User.find(keyword,{password: 0}).find({_id: {$ne: req.user._id}})
-    res.send(users)
+  const users = await User.find(keyword, { password: 0 }).find({ _id: { $ne: req.user._id } })
+  res.send(users)
 })
 
-module.exports = {registerUser, authUser, searchUsers}
+module.exports = { registerUser, authUser, searchUsers }

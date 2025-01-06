@@ -22,8 +22,7 @@ const ChatsMenu = () => {
       setChats(data)
       setLoading(false)
     } catch (error) {
-      console.error(error.message)
-      // setError(error.message)
+      console.error(error.response.data.message||'Unexpected Error')
       setLoading(false)
     }
   }
@@ -33,7 +32,7 @@ const ChatsMenu = () => {
   }, [toggleFetch])
   return (
     <div
-      className={`d-flex flex-column ${styles.chatsMenu}`}
+      className={`d-flex flex-column border-end ${styles.chatsMenu}`}
       style={{ height: '92vh' }}
     >
       <div

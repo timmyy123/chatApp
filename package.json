@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node backend/server.js",
+    "start": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run start\" \"npm run client\"",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "timmy",
@@ -19,5 +21,8 @@
     "mongoose": "^8.8.4",
     "nodemon": "^3.1.7",
     "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
